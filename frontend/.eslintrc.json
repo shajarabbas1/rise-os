@@ -1,0 +1,19 @@
+{
+  "extends": ["next", "plugin:prettier/recommended"],
+  "plugins": ["prettier", "unused-imports"],
+  "ignorePatterns": [".eslintrc.js"],
+
+  "rules": {
+    "prettier/prettier": ["error"],
+    "unused-imports/no-unused-imports": 1,
+    "unused-imports/no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "none",
+        "ignoreRestSiblings": true
+      }
+    ],
+    
+  }
+}
