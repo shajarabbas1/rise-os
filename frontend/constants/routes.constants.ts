@@ -1,0 +1,12 @@
+export const PAGES_ROUTES = {
+  careerDashboard: '/',
+  participant: '/participant',
+  compliance: '/compliance',
+  policies: '/policies',
+  pulseChat: '/pulse-chat',
+  policyManagement: '/policy-management',
+  calendar: '/calendar',
+  login: '/login',
+  signup: '/signup',
+  verifyEmail: '/verify-email',
+};

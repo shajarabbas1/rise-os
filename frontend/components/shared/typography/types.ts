@@ -1,4 +1,5 @@
 export interface ITypoGraphyProps {
-  title: string;
+  title: string | number;
   className?: string;
+  onClick?: any;
 }

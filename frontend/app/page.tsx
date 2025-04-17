@@ -1,10 +1,11 @@
-import Row from '@/components/shared/row';
-import { SectionHeading } from '@/components/shared/typography';
+'use client';
+import RegisterAsProvider from '@/components/layout/feature/career-dashboard/registration-steps/RegisterAsProvider';
+import DashboardLayout from './compliance/layout';
 
 export default function Home() {
   return (
-    <Row>
-      <SectionHeading title="Welcome to riseos" />
-    </Row>
+    <DashboardLayout>
+      <RegisterAsProvider />
+    </DashboardLayout>
   );
 }

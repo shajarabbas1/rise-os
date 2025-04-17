@@ -1,9 +1,17 @@
 import { ITypoGraphyProps } from './types';
+import { Montserrat } from 'next/font/google';
 
-const CardHeading: React.FC<ITypoGraphyProps> = ({ title, className }) => {
+const montserrat = Montserrat({ subsets: ['vietnamese'] });
+
+const CardHeading: React.FC<ITypoGraphyProps> = ({
+  title,
+  className,
+  onClick,
+}) => {
   return (
     <h3
-      className={`capitalize text-[16px] font-bold  text-center ${className}`}
+      className={`text-[16px] font-semibold ${montserrat.className} ${className}`}
+      onClick={onClick}
     >
       {title}
     </h3>
