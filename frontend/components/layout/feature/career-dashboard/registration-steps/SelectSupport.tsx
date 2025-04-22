@@ -6,8 +6,11 @@ import { CardHeading } from '@/components/shared/typography';
 import { useCallback, useState } from 'react';
 import WatchVideo from '../WatchVideo';
 import IconButton from '@/components/shared/button';
+import { RegistrationStepsFlow } from '.';
 
-const SelectSupport = () => {
+const SelectSupport: React.FC<{ handleNextStep: any }> = ({
+  handleNextStep,
+}) => {
   const [showVideoModal, setShowVideoModal] = useState<boolean>(false);
 
   /**
@@ -37,7 +40,7 @@ const SelectSupport = () => {
         <CircleCard count={1} className="size-[40px]" />
         <WatchVideo
           title="Watch Video"
-          className='justify-end'
+          className="justify-end"
           imgURL="https://images.unsplash.com/photo-1726179612723-124312ff97a8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw5fHx8ZW58MHx8fHx8"
           handleOnClick={toggleVideoModal}
         />
@@ -101,7 +104,13 @@ const SelectSupport = () => {
         ))}
       </Row>
 
-      <IconButton title="Next" className="bg-orange-300" />
+      <IconButton
+        title="Next"
+        className="bg-orange-300"
+        handleOnClick={() =>
+          handleNextStep(RegistrationStepsFlow.SELECT_SUB_SUPPORT)
+        }
+      />
     </Row>
   );
 };

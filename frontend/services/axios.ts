@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const instance = axios.create({
-  baseURL: process.env.REACT_APP_BACKEND_URI,
+const axiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URI,
   headers: {
     'Content-type': 'application/json',
     'Access-Control-Allow-Origin': '*',
@@ -9,4 +9,4 @@ const instance = axios.create({
   },
 });
 
-export default instance;
+export default axiosInstance;

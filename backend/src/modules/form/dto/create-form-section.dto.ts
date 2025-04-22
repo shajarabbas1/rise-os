@@ -18,7 +18,7 @@ export default class CreateFormSectionDto {
 
   @ApiPropertyOptional({
     description: 'Description of the form section',
-    example: 'Participant details abd identification',
+    example: 'Participant details and identification',
   })
   @IsOptional()
   @IsString()

@@ -4,7 +4,6 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseUUIDPipe,
   Patch,
   Post,
   Put,
@@ -206,25 +205,16 @@ export default class AuthController {
     };
   }
 
-  @Put(':id')
-  @ApiOperation({ summary: 'Set user full name and password.' })
-  @ApiParam({
-    name: 'id',
-    description: 'Enter the Id of user to Update',
-    type: String,
+  @Put()
+  @ApiOperation({
+    summary: 'Set user full name, password and return user with token.',
   })
   @ApiResponse({
     status: 200,
     description: 'User details updated successful.',
   })
-  async setUserNameAndPasword(
-    @Param('id', new ParseUUIDPipe()) id: string,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
-    const data = await this.authService.setUserNameAndPasword(
-      id,
-      updateUserDto,
-    );
+  async setUserNameAndPasword(@Body() updateUserDto: UpdateUserDto) {
+    const data = await this.authService.setUserNameAndPasword(updateUserDto);
 
     return {
       message: 'User data updated successfully',

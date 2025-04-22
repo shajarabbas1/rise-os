@@ -10,7 +10,6 @@ export class FormField extends CustomBaseEntity {
     type: 'varchar',
     length: 255,
     nullable: false,
-    transformer: toLowerCaseTransformer,
   })
   name: string;
 

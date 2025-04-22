@@ -133,11 +133,11 @@ const Page = () => {
     <Row className="px-4 py-6 justify-between items-center overflow-hidden">
       <Image
         alt="Video Guide"
-        height={20}
-        width={60}
+        height={90}
+        width={570}
         loading="eager"
         src={authBGImage}
-        className="w-[42%] object-cover rounded-4xl"
+        className="object-cover rounded-4xl"
       />
 
       <Row className="w-[55%] flex-col items-start">

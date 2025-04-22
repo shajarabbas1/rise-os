@@ -1,7 +1,8 @@
-import { Entity, Column, OneToMany } from 'typeorm';
+import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import CustomBaseEntity from 'src/common/infra/base-classes/base.entity';
 import { FormField } from './form-field.entity';
 import { FormSection } from './form-section.entity';
+import Category from 'src/modules/category/entities/category.entity';
 
 @Entity({ name: 'forms' })
 export class Form extends CustomBaseEntity {
@@ -14,6 +15,15 @@ export class Form extends CustomBaseEntity {
 
   @Column({ nullable: true, default: '' })
   description: string;
+
+  @Column({ nullable: true, default: null })
+  categoryId: string;
+
+  @ManyToOne(() => Category, category => category.categoryForms, {
+    nullable: true,
+  })
+  @JoinColumn()
+  category: Category;
 
   @OneToMany(() => FormField, field => field.form, {})
   fields: FormField[];

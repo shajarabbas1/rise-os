@@ -7,8 +7,11 @@ import { useCallback, useState } from 'react';
 import WatchVideo from '../WatchVideo';
 import IconButton from '@/components/shared/button';
 import ProgressBar from '@/components/layout/progress-bar';
+import { RegistrationStepsFlow } from '.';
 
-const SelectSubSupport = () => {
+const SelectSubSupport: React.FC<{ handleNextStep: any }> = ({
+  handleNextStep,
+}) => {
   const [showVideoModal, setShowVideoModal] = useState<boolean>(false);
 
   /**
@@ -78,8 +81,18 @@ const SelectSubSupport = () => {
       </Row>
 
       <Row className="gap-2">
-        <IconButton title="Back" className="border-2 border-orange-300" />
-        <IconButton title="Next" className="bg-orange-300" />
+        <IconButton
+          title="Back"
+          className="border-2 border-orange-300"
+          handleOnClick={() =>
+            handleNextStep(RegistrationStepsFlow.SELECT_SUPPORT)
+          }
+        />
+        <IconButton
+          title="Next"
+          className="bg-orange-300"
+          handleOnClick={() => handleNextStep(RegistrationStepsFlow.REVIEW)}
+        />
       </Row>
 
       {showVideoModal && (

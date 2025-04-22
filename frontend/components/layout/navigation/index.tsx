@@ -15,9 +15,9 @@ const AdminNavigation: React.FC<{
         isSelected ? 'bg-[#fda10c11]  border-l-4 border-[#fda10c]' : '  '
       }`}
     >
-      <Icon size={20} />
+      <Icon size={20} className={'w-[8%]' } />
 
-      <CardDescription title={title} className='text-[14px]' />
+      <CardDescription title={title} className="text-[14px] w-[70%]" />
     </Row>
   );
 };

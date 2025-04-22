@@ -32,11 +32,11 @@ export const passwordField = {
         /[A-Z]/.test(value) || 'Must include an uppercase letter',
       hasLowerCase: (value: string) =>
         /[a-z]/.test(value) || 'Must include a lowercase letter',
-      hasNumber: (value: string) => /\d/.test(value) || 'Must include a number',
       hasSpecialChar: (value: string) =>
         /[^A-Za-z0-9]/.test(value) || 'Must include a special character',
     },
   },
+  showErrors: false,
 };
 
 export const fullNameField = {
@@ -45,4 +45,5 @@ export const fullNameField = {
   placeHolder: 'John Doe',
   type: 'text',
   rules: { required: 'Full name is required' },
+  showErrors: true,
 };

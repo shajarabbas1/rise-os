@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { FaCheck, FaRegCircle } from 'react-icons/fa6';
@@ -16,18 +17,37 @@ import {
 } from '@/constants/form-fields.constants';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
-import { authBGImage, dummyEmail } from '@/constants';
+import { authBGImage } from '@/constants';
 import CircleCard from '@/components/shared/cards/CircleCount.card';
 import { getFirstLetter } from '@/utils/helper';
+import { useRouter } from 'next/navigation';
+import { PAGES_ROUTES } from '@/constants/routes.constants';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+interface IFormData {
+  fullName: string;
+  password: string;
+}
 
 const Page = () => {
+  const router = useRouter();
+
+  const email = useSelector((state: any) => state.user.validatedEmail);
+
+  // Redirect safely after render - if the user has not check/validate the email
+  useEffect(() => {
+    if (!email) {
+      router.push(PAGES_ROUTES.signup);
+    }
+  }, [email, router]);
+
   const {
     control,
     handleSubmit,
     reset,
     watch,
     formState: { errors, isValid },
-  } = useForm<{ fullName: string; password: string }>({
+  } = useForm<IFormData>({
     defaultValues: {
       fullName: '',
       password: '',
@@ -56,9 +76,10 @@ const Page = () => {
   const allRulesPassed =
     rulesChecklist.every(rule => rule.passed) && passwordStrength >= 3;
 
-  const onSubmit = async (data: any) => {
-    console.log(data);
-    reset();
+  const onSubmit = async (data: IFormData) => {
+    console.log({ ...data, email });
+    // router.push(PAGES_ROUTES.careerDashboard);
+    // reset();
   };
 
   const getStrengthText = (score: number) => {
@@ -69,57 +90,34 @@ const Page = () => {
     <Row className="px-4 py-6 justify-between items-center overflow-hidden">
       <Image
         alt="Video Guide"
-        height={20}
-        width={60}
+        height={90}
+        width={570}
         loading="eager"
         src={authBGImage}
-        className="w-[42%] object-cover rounded-4xl"
+        className="object-cover rounded-4xl"
       />
 
       <Row className="w-[55%] flex-col items-start">
         <SectionHeading title="Create your password" />
 
         <Row className="items-center gap-2">
-          <CircleCard
-            count={getFirstLetter(dummyEmail)}
-            className="size-[34px]"
-          />
-          <CardHeading title={dummyEmail} className="my-4" />
+          <CircleCard count={getFirstLetter(email)} className="size-[34px]" />
+          <CardHeading title={email} className="my-4" />
         </Row>
 
         <Row className="flex-col gap-4 w-full">
-          <LabeledInput
-            name={fullNameField.name}
-            label={fullNameField.label}
-            control={control}
-            placeHolder={fullNameField.placeHolder}
-            type={fullNameField.type}
-            rules={fullNameField.rules}
-            errors={errors}
-          />
-
-          <LabeledInput
-            name={passwordField.name}
-            label={passwordField.label}
-            control={control}
-            placeHolder={passwordField.placeHolder}
-            type={passwordField.type}
-            showErrors={false}
-            rules={{
-              required: 'Password is required',
-              validate: {
-                minLength: v =>
-                  v.length >= 8 || 'Password must be at least 8 characters',
-                upperLower: v =>
-                  (/[a-z]/.test(v) && /[A-Z]/.test(v)) ||
-                  'Use upper and lower case letters',
-                symbol: v =>
-                  /[^A-Za-z0-9]/.test(v) || 'Use at least one symbol',
-                strength: () => passwordStrength >= 3 || 'Password is too weak',
-              },
-            }}
-            errors={errors}
-          />
+          {[fullNameField, passwordField].map(item => (
+            <LabeledInput
+              key={item.name}
+              name={item.name}
+              label={item.label}
+              control={control}
+              placeHolder={item.placeHolder}
+              type={item.type}
+              rules={item.rules}
+              errors={errors}
+            />
+          ))}
 
           {passwordValue && (
             <div className="w-full mt-[-12px] mb-3">
@@ -139,7 +137,7 @@ const Page = () => {
 
               <CardDescription
                 title={`Strength: ${getStrengthText(passwordStrength)}`}
-                className='mt-2'
+                className="mt-2"
               />
 
               {/* Checklist */}

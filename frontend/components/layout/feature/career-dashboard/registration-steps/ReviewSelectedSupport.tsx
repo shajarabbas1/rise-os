@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import CategoryCard from '@/components/shared/cards/Category.card';
 import CircleCard from '@/components/shared/cards/CircleCount.card';
 import VideoTutorialModal from '@/components/shared/modals/VideoTutorial.modal';
@@ -7,8 +8,11 @@ import { useCallback, useState } from 'react';
 import WatchVideo from '../WatchVideo';
 import IconButton from '@/components/shared/button';
 import ProgressBar from '@/components/layout/progress-bar';
+import { RegistrationStepsFlow } from '.';
 
-const ReviewSelectedSupport = () => {
+const ReviewSelectedSupport: React.FC<{ handleNextStep: any }> = ({
+  handleNextStep,
+}) => {
   const [showVideoModal, setShowVideoModal] = useState<boolean>(false);
 
   /**
@@ -106,8 +110,18 @@ const ReviewSelectedSupport = () => {
       </Row>
 
       <Row className="gap-2">
-        <IconButton title="Back" className="border-2 border-orange-300" />
-        <IconButton title="Confirm" className="bg-orange-300" />
+        <IconButton
+          title="Back"
+          className="border-2 border-orange-300"
+          handleOnClick={() =>
+            handleNextStep(RegistrationStepsFlow.SELECT_SUB_SUPPORT)
+          }
+        />
+        <IconButton
+          title="Confirm"
+          className="bg-orange-300"
+          handleOnClick={() => handleNextStep(RegistrationStepsFlow.SUMMARY)}
+        />
       </Row>
 
       {showVideoModal && (

@@ -28,7 +28,7 @@ const IconButton: React.FC<IButton> = ({
 }) => {
   return (
     <Row
-      className={`rounded-md cursor-pointer gap-1  items-center ${className} `}
+      className={`rounded-md gap-1  items-center ${className} ${!disabled ? 'cursor-pointer' : ''} `}
     >
       {Icon && (
         <ReactIcon
@@ -38,7 +38,7 @@ const IconButton: React.FC<IButton> = ({
       )}
 
       <button
-        className={`px-3 py-1 text-[14px] rounded-md cursor-pointer ${inter.className} ${btnClassName}`}
+        className={`px-3 py-1 text-[14px] rounded-md  ${inter.className} ${btnClassName} ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
         onClick={handleOnClick}
         disabled={disabled}
       >

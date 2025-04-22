@@ -114,7 +114,11 @@ export default class AuthService {
     return await this.userService.resendEmailVerification(payload);
   }
 
-  async setUserNameAndPasword(id: string, updateUserDto: UpdateUserDto) {
-    return await this.userService.setUserNameAndPasword(id, updateUserDto);
+  async setUserNameAndPasword(updateUserDto: UpdateUserDto) {
+    const user = await this.userService.setUserNameAndPasword(updateUserDto);
+
+    const accessToken = await this.generateJwt(user);
+
+    return { ...user, accessToken };
   }
 }

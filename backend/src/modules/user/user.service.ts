@@ -34,15 +34,21 @@ export default class UserService {
     });
   }
 
-  async findById(id: string, throwException = true): Promise<User> {
+  async findById(
+    id: string,
+    throwException = true,
+    loadRelations = true,
+  ): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { id },
-      relations: [
-        'userCategories',
-        'userCategories.category',
-        'userSubCategories',
-        'userSubCategories.subCategory',
-      ],
+      ...(loadRelations && {
+        relations: [
+          'userCategories',
+          'userCategories.category',
+          'userSubCategories',
+          'userSubCategories.subCategory',
+        ],
+      }),
     });
 
     if (!user && throwException) {
@@ -233,11 +239,8 @@ export default class UserService {
     return true;
   }
 
-  async setUserNameAndPasword(
-    id: string,
-    payload: UpdateUserDto,
-  ): Promise<User> {
-    const user = await this.findById(id);
+  async setUserNameAndPasword(payload: UpdateUserDto): Promise<User> {
+    const user = await this.findByEmail(payload.email);
 
     if (user.isRegistrationComplete) {
       throw new BadRequestException(
@@ -248,12 +251,12 @@ export default class UserService {
     const { fullName, password } = payload;
     const hashedPassword = await hash(password, 10);
 
-    await this.userRepository.update(id, {
+    await this.userRepository.update(user.id, {
       fullName,
       password: hashedPassword,
       isRegistrationComplete: true,
     });
 
-    return await this.findById(id);
+    return await this.findById(user.id, true, false);
   }
 }

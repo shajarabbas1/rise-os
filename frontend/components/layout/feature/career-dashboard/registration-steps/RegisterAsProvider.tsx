@@ -6,23 +6,18 @@ import ProfileStatItem from '../ProfileStatItem';
 import { VscPreview } from 'react-icons/vsc';
 import RegistrationNavigation from '@/components/layout/navigation/registration.navigation';
 import { useState } from 'react';
-import SelectSupport from './SelectSupport';
 import FormListing from '../form-and-modules-steps';
-import SelectSubSupport from './SelectSubSupport';
-import ReviewSelectedSupport from './ReviewSelectedSupport';
-import SupportSummary from './SupportSummary';
 import Feed from '../Feed';
 import File from '../File';
+import RegistrationSteps from '.';
 
 const RegisterAsProvider = () => {
   const [selectedStep, setSelectedStep] = useState<string>('registration');
 
-  const isRegistrationTab = selectedStep === 'registration';
-
   const renderContent = () => {
     switch (selectedStep) {
       case 'registration':
-        return <SelectSupport />;
+        return <RegistrationSteps />;
 
       case 'forms_and_modules':
         return <FormListing />;
@@ -152,13 +147,6 @@ const RegisterAsProvider = () => {
       </Row>
 
       {renderContent()}
-      {isRegistrationTab && (
-        <>
-          <SelectSubSupport />
-          <ReviewSelectedSupport />
-          <SupportSummary />
-        </>
-      )}
     </Row>
   );
 };

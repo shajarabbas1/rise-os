@@ -3,6 +3,14 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export default class UpdateUserDto {
   @ApiProperty({
+    example: 'waqar.hussain@piecyfer.com',
+    required: true,
+  })
+  @IsString()
+  @IsNotEmpty()
+  email: string;
+
+  @ApiProperty({
     example: 'John',
     required: false,
     description: 'The full name of the user.',

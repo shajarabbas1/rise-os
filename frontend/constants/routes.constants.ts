@@ -9,4 +9,6 @@ export const PAGES_ROUTES = {
   login: '/login',
   signup: '/signup',
   verifyEmail: '/verify-email',
+  createPassword: 'create-password',
+  forgotPassword: 'forgot-password',
 };
