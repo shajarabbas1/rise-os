@@ -6,12 +6,22 @@ import { CardHeading } from '@/components/shared/typography';
 import { useCallback, useState } from 'react';
 import WatchVideo from '../WatchVideo';
 import IconButton from '@/components/shared/button';
-import { RegistrationStepsFlow } from '.';
+import { RegistrationStepsFlowEnum } from '.';
 
-const SelectSupport: React.FC<{ handleNextStep: any }> = ({
-  handleNextStep,
-}) => {
+interface ISelectSupportProps {
+  handleNextStep: (step: RegistrationStepsFlowEnum) => void;
+}
+
+interface ISupport {
+  id: string;
+  name: string;
+  description: string;
+  tags: string[];
+}
+
+const SelectSupport: React.FC<ISelectSupportProps> = ({ handleNextStep }) => {
   const [showVideoModal, setShowVideoModal] = useState<boolean>(false);
+  const [selectedSupport, setSelectedSupport] = useState<ISupport | null>(null);
 
   /**
    * We're using useCallback here to memoize the toggleVideoModal function.
@@ -51,13 +61,15 @@ const SelectSupport: React.FC<{ handleNextStep: any }> = ({
       <Row className="w-full flex-wrap justify-between">
         {[
           {
-            title: 'Daily Living Assistance',
+            id: '01',
+            name: 'Daily Living Assistance',
             description:
               'Support with everyday personal activities, household tasks, and shared living arrangements.',
             tags: ['Personal Care', 'Household Tasks', 'Shared Living'],
           },
           {
-            title: 'Assistive Tech & Access',
+            id: '02',
+            name: 'Assistive Tech & Access',
             description:
               'Equipment and modifications to improve mobility, and home accessibility for greater independence.',
             tags: [
@@ -67,7 +79,8 @@ const SelectSupport: React.FC<{ handleNextStep: any }> = ({
             ],
           },
           {
-            title: 'Health & Therapy',
+            id: '03',
+            name: 'Health & Therapy',
             description:
               'Therapies like physiotherapy and behavior therapy to improve well-being and independence.',
             tags: [
@@ -78,7 +91,8 @@ const SelectSupport: React.FC<{ handleNextStep: any }> = ({
           },
 
           {
-            title: 'Plan Management',
+            id: '04',
+            name: 'Plan Management',
             description:
               'Assistance with managing NDIS funding, budgeting, and coordinating services to optimize resources.',
             tags: [
@@ -88,18 +102,20 @@ const SelectSupport: React.FC<{ handleNextStep: any }> = ({
             ],
           },
           {
-            title: 'Other (Specify)',
+            id: '05',
+            name: 'Other (Specify)',
             description:
               "If your services don't align with the listed categories, please specify them here for accurate registration.",
             tags: ['Custom Support', 'Specialized Support', 'Additional Needs'],
           },
-        ].map((item, index) => (
+        ].map((item: ISupport) => (
           <CategoryCard
-            key={index}
+            key={item.name}
             description={item.description}
-            title={item.title}
+            title={item.name}
             tags={item.tags}
-            containerClassName="w-[19%]"
+            containerClassName={`w-[19%] cursor-pointer ${selectedSupport?.id === item.id ? 'border-2' : ''}`}
+            onClick={() => setSelectedSupport(item)}
           />
         ))}
       </Row>
@@ -108,8 +124,9 @@ const SelectSupport: React.FC<{ handleNextStep: any }> = ({
         title="Next"
         className="bg-orange-300"
         handleOnClick={() =>
-          handleNextStep(RegistrationStepsFlow.SELECT_SUB_SUPPORT)
+          handleNextStep(RegistrationStepsFlowEnum.SELECT_SUB_SUPPORT)
         }
+        disabled={!selectedSupport}
       />
     </Row>
   );

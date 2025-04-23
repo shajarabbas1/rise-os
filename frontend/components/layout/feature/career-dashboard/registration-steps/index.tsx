@@ -4,30 +4,31 @@ import SelectSubSupport from './SelectSubSupport';
 import ReviewSelectedSupport from './ReviewSelectedSupport';
 import SupportSummary from './SupportSummary';
 
-export const RegistrationStepsFlow = {
-  SELECT_SUPPORT: 'support',
-  SELECT_SUB_SUPPORT: 'sub_support',
-  REVIEW: 'review',
-  SUMMARY: 'summary',
-};
+export enum RegistrationStepsFlowEnum {
+  SELECT_SUPPORT = 'SELECT_SUPPORT',
+  SELECT_SUB_SUPPORT = 'SELECT_SUB_SUPPORT',
+  REVIEW = 'REVIEW',
+  FILES = 'FILES',
+  SUMMARY = 'SUMMARY',
+}
 
 const RegistrationSteps = () => {
-  const [selectedStep, setSelectedStep] = useState<string>(
-    RegistrationStepsFlow.SELECT_SUPPORT,
+  const [selectedStep, setSelectedStep] = useState<RegistrationStepsFlowEnum>(
+    RegistrationStepsFlowEnum.SELECT_SUPPORT,
   );
 
   const content = useMemo(() => {
     switch (selectedStep) {
-      case RegistrationStepsFlow.SELECT_SUPPORT:
+      case RegistrationStepsFlowEnum.SELECT_SUPPORT:
         return <SelectSupport handleNextStep={setSelectedStep} />;
 
-      case RegistrationStepsFlow.SELECT_SUB_SUPPORT:
+      case RegistrationStepsFlowEnum.SELECT_SUB_SUPPORT:
         return <SelectSubSupport handleNextStep={setSelectedStep} />;
 
-      case RegistrationStepsFlow.REVIEW:
+      case RegistrationStepsFlowEnum.REVIEW:
         return <ReviewSelectedSupport handleNextStep={setSelectedStep} />;
 
-      case RegistrationStepsFlow.SUMMARY:
+      case RegistrationStepsFlowEnum.SUMMARY:
         return <SupportSummary />;
 
       default:

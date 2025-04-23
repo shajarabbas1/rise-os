@@ -7,19 +7,38 @@ import { useCallback, useState } from 'react';
 import WatchVideo from '../WatchVideo';
 import IconButton from '@/components/shared/button';
 import ProgressBar from '@/components/layout/progress-bar';
-import { RegistrationStepsFlow } from '.';
+import { RegistrationStepsFlowEnum } from '.';
 
-const SelectSubSupport: React.FC<{ handleNextStep: any }> = ({
+interface ISelectSubSupportProps {
+  handleNextStep: (step: RegistrationStepsFlowEnum) => void;
+}
+
+interface ISubSupport {
+  id: string;
+  name: string;
+  description: string;
+  categoryId: string;
+}
+
+const SelectSubSupport: React.FC<ISelectSubSupportProps> = ({
   handleNextStep,
 }) => {
   const [showVideoModal, setShowVideoModal] = useState<boolean>(false);
+  const [selectedSubSupports, setSelectedSubSupports] = useState<ISubSupport[]>(
+    [],
+  );
 
-  /**
-   * We're using useCallback here to memoize the toggleVideoModal function.
-   * This ensures that the function reference stays stable across re-renders.
-   * It's important because we're passing this function as a prop to the WatchVideo component.
-   * Combined with React.memo in the child, this avoids unnecessary re-renders of WatchVideo.
-   */
+  const toggleSubSupport = useCallback((item: ISubSupport) => {
+    setSelectedSubSupports(prev => {
+      const exists = prev.some(support => support.id === item.id);
+
+      if (exists) {
+        return prev.filter(support => support.id !== item.id);
+      } else {
+        return [...prev, item];
+      }
+    });
+  }, []);
 
   const toggleVideoModal = useCallback(() => {
     setShowVideoModal(prev => !prev);
@@ -47,37 +66,71 @@ const SelectSubSupport: React.FC<{ handleNextStep: any }> = ({
       <Row className="w-full flex-wrap gap-3">
         {[
           {
-            title: 'Assistive products for personal care and safety',
+            id: '01',
+            description: '',
+            categoryId: '',
+            name: 'Assistive products for personal care and safety',
           },
           {
-            title: 'Personal mobility equipment',
+            id: '02',
+            description: '',
+            categoryId: '',
+            name: 'Personal mobility equipment',
           },
           {
-            title: 'Assistance with travel/transport arrangements',
-          },
-
-          {
-            title: 'Assistance equipment for recreation',
-          },
-          {
-            title: 'Vision equipment',
+            id: '03',
+            description: '',
+            categoryId: '',
+            name: 'Assistance with travel/transport arrangements',
           },
           {
-            title: 'Hearing equipment',
+            id: '04',
+            description: '',
+            categoryId: '',
+            name: 'Assistance equipment for recreation',
           },
           {
-            title: 'Communication and information equipment',
+            id: '05',
+            description: '',
+            categoryId: '',
+            name: 'Vision equipment',
           },
-          { title: 'Specialized driver training' },
-          { title: 'Customized prosthetics' },
-        ].map((item, index) => (
-          <CategoryCard
-            key={index}
-            title={item.title}
-            containerClassName="w-[19%]"
-            handleDetailClick={() => alert('Detail page is pending...')}
-          />
-        ))}
+          {
+            id: '06',
+            description: '',
+            categoryId: '',
+            name: 'Hearing equipment',
+          },
+          {
+            id: '07',
+            description: '',
+            categoryId: '',
+            name: 'Communication and information equipment',
+          },
+          {
+            id: '08',
+            description: '',
+            categoryId: '',
+            name: 'Specialized driver training',
+          },
+          {
+            id: '09',
+            description: '',
+            categoryId: '',
+            name: 'Customized prosthetics',
+          },
+        ].map(item => {
+          const isSelected = selectedSubSupports.some(s => s.id === item.id);
+          return (
+            <CategoryCard
+              key={item.id}
+              title={item.name}
+              containerClassName={`w-[19%] cursor-pointer ${isSelected ? 'border-2' : ''}`}
+              handleDetailClick={() => alert('Detail page is pending...')}
+              onClick={() => toggleSubSupport(item)}
+            />
+          );
+        })}
       </Row>
 
       <Row className="gap-2">
@@ -85,13 +138,15 @@ const SelectSubSupport: React.FC<{ handleNextStep: any }> = ({
           title="Back"
           className="border-2 border-orange-300"
           handleOnClick={() =>
-            handleNextStep(RegistrationStepsFlow.SELECT_SUPPORT)
+            handleNextStep(RegistrationStepsFlowEnum.SELECT_SUPPORT)
           }
         />
+
         <IconButton
           title="Next"
           className="bg-orange-300"
-          handleOnClick={() => handleNextStep(RegistrationStepsFlow.REVIEW)}
+          handleOnClick={() => handleNextStep(RegistrationStepsFlowEnum.REVIEW)}
+          disabled={!selectedSubSupports.length}
         />
       </Row>
 

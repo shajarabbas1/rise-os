@@ -7,6 +7,7 @@ interface ICategoryCardProps {
   tags?: string[];
   containerClassName: string;
   handleDetailClick?: () => void;
+  onClick?: () => void;
 }
 
 const CategoryCard: React.FC<ICategoryCardProps> = ({
@@ -15,9 +16,11 @@ const CategoryCard: React.FC<ICategoryCardProps> = ({
   tags,
   containerClassName,
   handleDetailClick,
+  onClick,
 }) => {
   return (
     <Row
+      onClick={onClick}
       className={`bg-orange-100 rounded-lg p-3 flex-col items-start gap-3 ${containerClassName}`}
     >
       <CardHeading className="!text-[12px]" title={title} />

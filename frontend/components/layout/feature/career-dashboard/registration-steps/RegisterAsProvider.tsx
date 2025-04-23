@@ -11,25 +11,35 @@ import Feed from '../Feed';
 import File from '../File';
 import RegistrationSteps from '.';
 
+export enum RegistrationStepsEnum {
+  REGISTRATION = 'REGISTRATION',
+  FORM_AND_MODULES = 'FORM_AND_MODULES',
+  COMPLIANCE = 'COMPLIANCE',
+  FILES = 'FILES',
+  FEED = 'FEED',
+}
+
 const RegisterAsProvider = () => {
-  const [selectedStep, setSelectedStep] = useState<string>('registration');
+  const [selectedStep, setSelectedStep] = useState<RegistrationStepsEnum>(
+    RegistrationStepsEnum.REGISTRATION,
+  );
 
   const renderContent = () => {
     switch (selectedStep) {
-      case 'registration':
+      case RegistrationStepsEnum.REGISTRATION:
         return <RegistrationSteps />;
 
-      case 'forms_and_modules':
+      case RegistrationStepsEnum.FORM_AND_MODULES:
         return <FormListing />;
 
-      case 'feed':
+      case RegistrationStepsEnum.FEED:
         return <Feed />;
 
-      case 'files':
+      case RegistrationStepsEnum.FILES:
         return <File />;
 
       default:
-        return <p>In Progress...</p>;
+        return <CardDescription title={'In Progress...'} />;
     }
   };
 
@@ -78,11 +88,17 @@ const RegisterAsProvider = () => {
 
         <Row className="w-full bg-[#fda10c4a] mt-4 gap-4 p-2 rounded-lg">
           {[
-            { title: 'Registration', state: 'registration' },
-            { title: 'Forms & Modules', state: 'forms_and_modules' },
-            { title: 'Compliance', state: 'compliance' },
-            { title: 'Files', state: 'files' },
-            { title: 'Feed', state: 'feed' },
+            {
+              title: 'Registration',
+              state: RegistrationStepsEnum.REGISTRATION,
+            },
+            {
+              title: 'Forms & Modules',
+              state: RegistrationStepsEnum.FORM_AND_MODULES,
+            },
+            { title: 'Compliance', state: RegistrationStepsEnum.COMPLIANCE },
+            { title: 'Files', state: RegistrationStepsEnum.FILES },
+            { title: 'Feed', state: RegistrationStepsEnum.FEED },
           ].map((item, index) => (
             <RegistrationNavigation
               key={index}
