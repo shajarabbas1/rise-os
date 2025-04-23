@@ -16,7 +16,7 @@ import {
   passwordField,
 } from '@/constants/form-fields.constants';
 import Image from 'next/image';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { authBGImage } from '@/constants';
 import CircleCard from '@/components/shared/cards/CircleCount.card';
 import { getFirstLetter } from '@/utils/helper';
@@ -24,16 +24,19 @@ import { useRouter } from 'next/navigation';
 import { PAGES_ROUTES } from '@/constants/routes.constants';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { userActions } from '@/redux/slices/user.slice';
 interface IFormData {
   fullName: string;
   password: string;
+  email: string;
 }
 
 const Page = () => {
   const router = useRouter();
 
   const email = useSelector((state: any) => state.user.validatedEmail);
-
+  const dispatch = useDispatch();
   // Redirect safely after render - if the user has not check/validate the email
   useEffect(() => {
     if (!email) {
@@ -78,7 +81,14 @@ const Page = () => {
 
   const onSubmit = async (data: IFormData) => {
     console.log({ ...data, email });
-    // router.push(PAGES_ROUTES.careerDashboard);
+    dispatch(
+      userActions.setUserNameAndPaswordRequest({
+        email,
+        fullName: data.fullName,
+        password: data.password,
+      }),
+    );
+    router.push(PAGES_ROUTES.careerDashboard);
     // reset();
   };
 
