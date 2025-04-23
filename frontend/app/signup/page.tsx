@@ -18,7 +18,8 @@ import { authBGImage } from '@/constants';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { userActions } from '@/redux/actions/user.action';
+// import { userActions } from '@/redux/actions/user.action';
+import { userActions } from '@/redux/slices/user.slice';
 
 interface IFormData {
   email: string;
@@ -46,9 +47,8 @@ const Page = () => {
 
   const onSubmit = async (data: IFormData) => {
     dispatch(
-      userActions.validateEmail.request({
+      userActions.validateEmailRequest({
         email: data.email,
-
         onSuccess: () => {
           toast.success('Please continue to create your password', {
             toastId: 'email-validation-success',
@@ -57,7 +57,6 @@ const Page = () => {
           reset();
           router.push(PAGES_ROUTES.createPassword);
         },
-
         onError: (errorMessage: string) => {
           toast.error(
             errorMessage || 'Email validation failed. Please try again.',
