@@ -3,7 +3,8 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
+import { PAGES_ROUTES } from '@/constants/routes.constants';
+import { UserRoleEnum } from '@/types/user.type';
 
 export default function ProtectedLayout({
   children,
@@ -12,10 +13,11 @@ export default function ProtectedLayout({
 }) {
   const user = useSelector((state: any) => state.user.user);
   const router = useRouter();
-
   useEffect(() => {
     if (!user) {
-      router.push('/login');
+      router.push(PAGES_ROUTES.login);
+    } else if (user.data.role !== UserRoleEnum.SUPER_ADMIN) {
+      router.push(PAGES_ROUTES.careerDashboard);
     }
   }, [user, router]);
 

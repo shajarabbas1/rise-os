@@ -11,4 +11,5 @@ export const PAGES_ROUTES = {
   verifyEmail: '/verify-email',
   createPassword: 'create-password',
   forgotPassword: 'forgot-password',
+  emailTemplate: 'email-template',
 };

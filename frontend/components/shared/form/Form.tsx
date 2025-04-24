@@ -1,10 +1,12 @@
 'use client';
+
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { PrimaryHeading, SectionHeading } from '../typography';
 import Row from '../row';
 import LabeledInput from './Labeled.input';
 import LabeledCheckbox from './LabeledCheckBox.input';
+import CustomFileDropdown from './Custom.dropdown';
 interface IValidationRules {
   required?: string;
   [key: string]: any;
@@ -64,6 +66,13 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
       validationRules,
       options,
     } = field;
+    const files = [
+      'https://plus.unsplash.com/premium_photo-1681506669115-cb6b2d30dbc7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://plus.unsplash.com/premium_photo-1669324357471-e33e71e3f3d8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+      'https://images.unsplash.com/photo-1602679042292-0679c2663d07?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://www.africau.edu/images/default/sample.pdf',
+    ];
 
     const baseInputClass =
       'w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500';
@@ -91,6 +100,23 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
         );
 
       case 'date':
+        return (
+          <LabeledInput
+            labelClassName={
+              'block text-sm font-medium text-gray-700 mb-1 capitalize'
+            }
+            errors={errors}
+            label={label}
+            name={name}
+            type={type}
+            startDate={new Date()}
+            endDate={new Date(Date.now()) * 30 * 24 * 60 * 60 * 1000}
+            placeHolder={placeholder}
+            className={baseInputClass}
+            register={register}
+            validationRules={validationRules}
+          />
+        );
       case 'time':
         return (
           <LabeledInput
@@ -110,19 +136,22 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
 
       case 'file':
         return (
-          <LabeledInput
-            labelClassName={
-              'block text-sm font-medium text-gray-700 mb-1 capitalize'
-            }
-            errors={errors}
-            label={label}
-            name={name}
-            type={type}
-            className="w-full p-2 focus:outline-none"
-            placeHolder={placeholder}
-            register={register}
-            validationRules={validationRules}
-          />
+          <div>
+            <LabeledInput
+              labelClassName={
+                'block text-sm font-medium text-gray-700 mb-1 capitalize'
+              }
+              errors={errors}
+              label={label}
+              name={name}
+              type={type}
+              className="w-full p-2 focus:outline-none"
+              placeHolder={placeholder}
+              register={register}
+              validationRules={validationRules}
+            />
+            <CustomFileDropdown files={files} />
+          </div>
         );
 
       case 'textarea':
