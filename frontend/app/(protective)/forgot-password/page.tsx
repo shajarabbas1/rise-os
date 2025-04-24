@@ -21,7 +21,7 @@ const Page = () => {
   const router = useRouter();
 
   const {
-    control,
+    register,
     handleSubmit,
     reset,
     formState: { errors },
@@ -58,10 +58,10 @@ const Page = () => {
             key={index}
             name={item.name}
             label={item.label}
-            control={control}
+            register={register}
             placeHolder={item?.placeHolder}
             type={item.type}
-            rules={item.rules}
+            validationRules={item.rules}
             errors={errors}
           />
         ))}
