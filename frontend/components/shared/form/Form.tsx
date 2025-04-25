@@ -2,48 +2,16 @@
 
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { PrimaryHeading, SectionHeading } from '../typography';
+import { CardDescription, PrimaryHeading, SectionHeading } from '../typography';
 import Row from '../row';
 import LabeledInput from './Labeled.input';
 import LabeledCheckbox from './LabeledCheckBox.input';
 import CustomFileDropdown from './Custom.dropdown';
-interface IValidationRules {
-  required?: string;
-  [key: string]: any;
-}
-
-interface IFormField {
-  id: string;
-  name: string;
-  label: string;
-  type: string;
-  placeholder: string;
-  isRequired: boolean;
-  validationRules: IValidationRules;
-  options: any[] | null;
-  rowNumber: number;
-  order: number;
-  formId: string;
-  sectionId: string;
-}
-
-interface IFormSection {
-  id: string;
-  title: string;
-  description: string;
-  order: number;
-  formId: string;
-  fields: IFormField[];
-}
-
-interface IForm {
-  id: string;
-  name: string;
-  description: string;
-  categoryId: string | null;
-  sections: IFormSection[];
-}
-
+import { IForm, IFormField } from '../../../types/form.types';
+import IconButton from '../button';
+import CustomRadioGroup from './Labeled.radio';
+import CustomSelect from './Labeled.select';
+import CustomTextarea from './Labeled.textarea';
 const DynamicForm = ({ formData }: { formData: IForm }) => {
   const {
     register,
@@ -51,7 +19,7 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = data => {
+  const onSubmit = (data: any) => {
     console.log('Form submitted with data:', data);
   };
 
@@ -156,50 +124,38 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
 
       case 'textarea':
         return (
-          <textarea
-            id={id}
-            placeholder={placeholder}
-            rows={4}
-            className={baseInputClass}
-            {...register(name, validationRules)}
-          />
+          <CustomTextarea name={name} id={id} label={label} placeholder={placeholder} rows={4} validationRules={validationRules} className={baseInputClass} register={register} errors={errors}/>
         );
 
       case 'select':
         return (
-          <select
-            id={id}
-            className={baseInputClass}
-            {...register(name, validationRules)}
-          >
-            <option value="">Select an option</option>
-            {options &&
-              options.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-          </select>
+          options && (
+            <CustomSelect
+              id={id}
+              options={options}
+              name={name}
+              label={label}
+              validationRules={validationRules}
+              register={register}
+              errors={errors}
+            />
+          )
         );
 
       case 'radio':
         return (
-          <div className="flex flex-col space-y-2">
-            {options &&
-              options.map(option => (
-                <label
-                  key={option.value}
-                  className="flex items-center space-x-2"
-                >
-                  <input
-                    type="radio"
-                    value={option.value}
-                    {...register(name, validationRules)}
-                  />
-                  <span>{option.label}</span>
-                </label>
-              ))}
-          </div>
+          <Row className="flex flex-col space-y-2">
+            {options && (
+              <CustomRadioGroup
+                options={options}
+                name={name}
+                label={label}
+                register={register}
+                errors={errors}
+                validationRules={validationRules}
+              />
+            )}
+          </Row>
         );
 
       case 'checkbox':
@@ -217,43 +173,35 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
         }
 
         return (
-          <div className="flex flex-col space-y-2">
+          <Row className="flex flex-col space-y-2">
             {options.map(option => (
-              <label key={option.value} className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  value={option.value}
-                  {...register(`${name}.${option.value}`, validationRules)}
-                />
-                <span>{option.label}</span>
-              </label>
+              <LabeledCheckbox
+                key={option.value}
+                className={'flex items-center space-x-2'}
+                errors={errors}
+                name={`${name}.${option.value}`}
+                label={option.label}
+                register={register}
+                rules={validationRules}
+              />
             ))}
-          </div>
+          </Row>
         );
 
       default:
-        return (
-          <input
-            id={id}
-            type="text"
-            placeholder={placeholder}
-            className={baseInputClass}
-            {...register(name, validationRules)}
-          />
-        );
+        return null;
     }
   };
-
-  const sortedSections = [...formData.sections].sort(
-    (a, b) => a.order - b.order,
-  );
 
   return (
     <div className={'max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg'}>
       <PrimaryHeading title={formData.name} />
-      <p className="text-gray-600 mb-6">{formData.description}</p>
+      <CardDescription
+        className="text-gray-600 mb-6"
+        title={formData.description}
+      />
       <form onSubmit={handleSubmit(onSubmit)}>
-        {sortedSections.map(section => {
+        {formData.sections.map(section => {
           const sortedFields = [...section.fields].sort(
             (a, b) => a.order - b.order,
           );
@@ -264,7 +212,10 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
               className="mb-8 p-4 border border-gray-200 rounded-md"
             >
               <SectionHeading title={section.title} />
-              <p className="text-gray-600 mb-4">{section.description}</p>
+              <CardDescription
+                className="text-gray-600 mb-4"
+                title={section.description}
+              />
 
               <Row className={'space-y-4 flex-wrap justify-between w-full'}>
                 {sortedFields.map(field => (
@@ -278,12 +229,11 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
         })}
 
         <Row className={'mt-6'}>
-          <button
-            type="submit"
+          <IconButton
+            handleOnClick={handleSubmit(onSubmit)}
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
-            Submit Form
-          </button>
+            title="Submit"
+          />
         </Row>
       </form>
     </div>

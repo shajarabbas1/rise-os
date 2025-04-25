@@ -1,8 +1,14 @@
-const Page = ({ params }: { params: { id: string } }) => {
+import Row from '@/components/shared/row';
+import { PrimaryHeading } from '@/components/shared/typography';
+
+interface IPageProps {
+  params: { id: string };
+}
+const Page: React.FC<IPageProps> = async ({ params: { id } }) => {
   return (
-    <div className="w-full h-full flex justify-center items-center">
-      <h1 className="mt-1/2">email template {params.id}</h1>
-    </div>
+    <Row className="w-full h-full flex justify-center items-center">
+      <PrimaryHeading className="mt-1/2" title={`Email template with ${id}`} />
+    </Row>
   );
 };
 

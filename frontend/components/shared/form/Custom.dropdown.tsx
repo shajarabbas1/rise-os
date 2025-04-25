@@ -1,17 +1,22 @@
 'use client';
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { BsEye } from 'react-icons/bs';
 import Link from 'next/link';
-
-const CustomFileDropdown = ({ files }: { files: string[] }) => {
+import IconButton from '../button';
+import Row from '../row';
+import { CardDescription, SectionHeading } from '../typography';
+interface CustomDropdownProps {
+  files: string[];
+}
+const CustomFileDropdown: React.FC<CustomDropdownProps> = ({ files }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState('');
   const [previewUrl, setPreviewUrl] = useState('');
-  console.log(previewUrl, 'this is a previewurl');
-  const dropdownRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
-    const handleClickOutside = event => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
       }
@@ -21,24 +26,36 @@ const CustomFileDropdown = ({ files }: { files: string[] }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleSelect = fileUrl => {
+  const handleSelect = (fileUrl: string) => {
     setSelectedFile(fileUrl);
     setPreviewUrl(fileUrl);
     setIsOpen(false);
   };
 
-  const isImage = url => {
+  const isImage = (url: string) => {
     return url.match(/\.(jpeg|jpg|gif|png|webp)$/i) !== null;
   };
 
-  const isPdf = url => {
+  const isPdf = (url: string) => {
     return url.endsWith('.pdf');
   };
 
   return (
     <div className="w-full">
       <div className="relative" ref={dropdownRef}>
-        <button
+        <IconButton
+          title={
+            selectedFile
+              ? isPdf(selectedFile)
+                ? `PDF File`
+                : 'Image Selected'
+              : '-- Choose a file --'
+          }
+          handleOnClick={() => setIsOpen(!isOpen)}
+          className="border px-3 py-2 rounded-md w-full flex justify-between items-center bg-white flex-row-reverse"
+          Icon={BsEye}
+        />
+        {/* <button
           type="button"
           className="border px-3 py-2 rounded-md w-full flex justify-between items-center bg-white"
           onClick={() => setIsOpen(!isOpen)}
@@ -50,6 +67,7 @@ const CustomFileDropdown = ({ files }: { files: string[] }) => {
                 : 'Image Selected'
               : '-- Choose a file --'}
           </span>
+
           <svg
             className="w-4 h-4 ml-2"
             fill="none"
@@ -64,7 +82,8 @@ const CustomFileDropdown = ({ files }: { files: string[] }) => {
               d="M19 9l-7 7-7-7"
             />
           </svg>
-        </button>
+        </button> */}
+
         {isOpen && (
           <div className="absolute mt-1 w-full bg-white border rounded-md shadow-lg z-10 max-h-60 overflow-auto">
             <div className="py-1">
@@ -75,14 +94,14 @@ const CustomFileDropdown = ({ files }: { files: string[] }) => {
                   onClick={() => handleSelect(fileUrl)}
                 >
                   {isPdf(fileUrl) ? (
-                    <div className="flex text-lg items-center justify-between">
+                    <Row className="flex text-lg items-center justify-between">
                       <p>Pdf 1 </p>
                       <Link href={fileUrl}>
                         <BsEye size={20} />
                       </Link>
-                    </div>
+                    </Row>
                   ) : (
-                    <div className="flex items-center">
+                    <Row className="flex items-center">
                       <div className="w-12 h-12 mr-3 relative">
                         <Image
                           src={fileUrl}
@@ -92,7 +111,7 @@ const CustomFileDropdown = ({ files }: { files: string[] }) => {
                         />
                       </div>
                       <span>Image {index + 1}</span>
-                    </div>
+                    </Row>
                   )}
                 </div>
               ))}
@@ -102,7 +121,7 @@ const CustomFileDropdown = ({ files }: { files: string[] }) => {
       </div>
       {previewUrl && (
         <div className="mt-4">
-          <h3 className="font-medium mb-2">Preview:</h3>
+          <SectionHeading className="font-medium mb-2" title={'Preview'} />
           {isImage(previewUrl) ? (
             <div className="relative w-full h-64">
               <Image
@@ -114,14 +133,14 @@ const CustomFileDropdown = ({ files }: { files: string[] }) => {
             </div>
           ) : isPdf(previewUrl) ? (
             <div className="border rounded-md p-4 bg-gray-50">
-              <p className="mb-2">PDF Document</p>
-              <a
+              <CardDescription className="mb-2" title={'PDF Preview'} />
+              <Link
                 href={previewUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline flex items-center"
               >
-                <svg
+                {/* <svg
                   className="w-5 h-5 mr-1"
                   fill="none"
                   stroke="currentColor"
@@ -135,8 +154,10 @@ const CustomFileDropdown = ({ files }: { files: string[] }) => {
                     d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                   />
                 </svg>
+                 */}
+                <BsEye size={15} />
                 Open PDF Preview
-              </a>
+              </Link>
             </div>
           ) : null}
         </div>
