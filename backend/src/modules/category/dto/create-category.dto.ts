@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export default class CreateCategoryDto {
   @ApiProperty({
@@ -20,4 +20,14 @@ export default class CreateCategoryDto {
   @IsNotEmpty()
   @IsString()
   description: string;
+
+  @ApiProperty({
+    example: ['medical', 'wellness', 'therapy'],
+    description: 'Tags related to the category.',
+    required: false,
+    type: [String],
+  })
+  @IsArray()
+  @IsString({ each: true })
+  tags: string[];
 }

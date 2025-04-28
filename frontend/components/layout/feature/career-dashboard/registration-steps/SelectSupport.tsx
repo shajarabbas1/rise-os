@@ -113,7 +113,7 @@ const SelectSupport: React.FC<ISelectSupportProps> = ({ handleNextStep }) => {
             key={item.name}
             description={item.description}
             title={item.name}
-            tags={item.tags}
+            tags={item?.tags}
             containerClassName={`w-[19%] cursor-pointer ${selectedSupport?.id === item.id ? 'border-2' : ''}`}
             onClick={() => setSelectedSupport(item)}
           />

@@ -3,13 +3,16 @@ import RegistrationStepCard from '@/components/shared/cards/RegistrationStep.car
 import Row from '@/components/shared/row';
 import { CardDescription, CardHeading } from '@/components/shared/typography';
 import ProfileStatItem from '../ProfileStatItem';
-import { VscPreview } from 'react-icons/vsc';
+import { GrDocumentText } from 'react-icons/gr';
 import RegistrationNavigation from '@/components/layout/navigation/registration.navigation';
 import { useState } from 'react';
 import FormListing from '../form-and-modules-steps';
 import Feed from '../Feed';
 import File from '../File';
+import { GoChecklist } from 'react-icons/go';
 import RegistrationSteps from '.';
+import { TbTargetArrow } from 'react-icons/tb';
+import { SlBookOpen } from 'react-icons/sl';
 
 export enum RegistrationStepsEnum {
   REGISTRATION = 'REGISTRATION',
@@ -54,25 +57,25 @@ const RegisterAsProvider = () => {
             {
               title: 'Overall Compliance',
               percentage: '92',
-              Icon: VscPreview,
+              Icon: TbTargetArrow,
               containerClassName: 'bg-green-200',
             },
             {
               title: 'Documentation Quality',
               percentage: '88',
-              Icon: VscPreview,
+              Icon: GrDocumentText,
               containerClassName: 'bg-orange-200',
             },
             {
               title: 'Policy Adherence',
               percentage: '95',
-              Icon: VscPreview,
+              Icon: SlBookOpen,
               containerClassName: 'bg-green-200',
             },
             {
               title: 'Risk Management',
               percentage: '60',
-              Icon: VscPreview,
+              Icon: GoChecklist,
               containerClassName: 'bg-red-200',
             },
           ].map((item, index) => (

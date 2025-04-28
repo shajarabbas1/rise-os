@@ -1,8 +1,8 @@
 import { Entity, Column, OneToMany } from 'typeorm';
 import CustomBaseEntity from '../../../common/infra/base-classes/base.entity';
 import { toLowerCaseTransformer } from '../../../common/utils/helper';
-import UserCategory from 'src/modules/user-registration/entities/user-category.entity';
-import UserSubCategory from 'src/modules/user-registration/entities/user-sub-category.entity';
+import UserCategory from '../../../modules/user-registration/entities/user-category.entity';
+import UserSubCategory from '../../../modules/user-registration/entities/user-sub-category.entity';
 
 export enum UserRoleEnum {
   SUPER_ADMIN = 'SUPER_ADMIN',

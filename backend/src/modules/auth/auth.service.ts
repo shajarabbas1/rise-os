@@ -8,6 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import LoginDto from './dto/login.dto';
 import UserEmailDto from './dto/email.dto';
 import UpdateUserDto from '../user/dto/update-user.dto';
+import SignupUserDto from './dto/signup-user.dto';
 
 @Injectable()
 export default class AuthService {
@@ -32,7 +33,7 @@ export default class AuthService {
     return accessToken;
   }
 
-  async create(payload: UserEmailDto) {
+  async create(payload: SignupUserDto) {
     return await this.userService.create(payload);
   }
 

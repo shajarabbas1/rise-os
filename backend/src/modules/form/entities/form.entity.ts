@@ -1,8 +1,8 @@
 import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
-import CustomBaseEntity from 'src/common/infra/base-classes/base.entity';
+import CustomBaseEntity from '../../../common/infra/base-classes/base.entity';
 import { FormField } from './form-field.entity';
 import { FormSection } from './form-section.entity';
-import Category from 'src/modules/category/entities/category.entity';
+import Category from '../../../modules/category/entities/category.entity';
 
 @Entity({ name: 'forms' })
 export class Form extends CustomBaseEntity {

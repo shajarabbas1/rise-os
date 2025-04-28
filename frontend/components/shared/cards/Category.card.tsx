@@ -27,7 +27,7 @@ const CategoryCard: React.FC<ICategoryCardProps> = ({
 
       {description && <CardDescription title={description} className="" />}
 
-      {tags && tags.length && (
+      {tags && tags.length > 0 && (
         <Row className="flex-col gap-2">
           {tags?.map((tag, index) => (
             <CardDescription

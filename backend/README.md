@@ -33,7 +33,7 @@ $ yarn run seed seed_name
 $ yarn run seed user
 
 # sequence to run seeders
-$ user > category > sub category > form > form section > form field
+$ user > category > sub category > form > form section > form field > email template
 ```
 
 

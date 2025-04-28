@@ -1,7 +1,7 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
-import CustomBaseEntity from 'src/common/infra/base-classes/base.entity';
-import User from 'src/modules/user/entities/user.entity';
-import SubCategory from 'src/modules/category/entities/sub-category.entity';
+import CustomBaseEntity from '../../../common/infra/base-classes/base.entity';
+import User from '../../../modules/user/entities/user.entity';
+import SubCategory from '../../../modules/category/entities/sub-category.entity';
 
 @Entity({ name: 'user_sub_categories' })
 export default class UserSubCategory extends CustomBaseEntity {

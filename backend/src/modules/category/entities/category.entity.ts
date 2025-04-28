@@ -1,8 +1,8 @@
 import { Entity, Column, OneToMany } from 'typeorm';
 import CustomBaseEntity from '../../../common/infra/base-classes/base.entity';
 import SubCategory from './sub-category.entity';
-import { toLowerCaseTransformer } from 'src/common/utils/helper';
-import { Form } from 'src/modules/form/entities/form.entity';
+import { toLowerCaseTransformer } from '../../../common/utils/helper';
+import { Form } from '../../../modules/form/entities/form.entity';
 
 @Entity({ name: 'categories' })
 export default class Category extends CustomBaseEntity {
@@ -15,6 +15,9 @@ export default class Category extends CustomBaseEntity {
 
   @Column('text', { nullable: true, default: null })
   description: string;
+
+  @Column('text', { array: true, nullable: true })
+  tags: string[];
 
   @OneToMany(() => Form, form => form.category, {
     nullable: true,

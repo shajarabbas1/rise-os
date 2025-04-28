@@ -6,8 +6,8 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import UserCategory from '../entities/user-category.entity';
-import UserService from 'src/modules/user/user.service';
-import CategoryService from 'src/modules/category/services/category.service';
+import UserService from '../../../modules/user/user.service';
+import CategoryService from '../../../modules/category/services/category.service';
 import CreateUserCategoryDto from '../dto/create-user-category.dto';
 
 @Injectable()

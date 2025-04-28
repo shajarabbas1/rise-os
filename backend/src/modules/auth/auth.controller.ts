@@ -19,6 +19,7 @@ import AuthService from './auth.service';
 import LoginDto from './dto/login.dto';
 import UserEmailDto from './dto/email.dto';
 import UpdateUserDto from '../user/dto/update-user.dto';
+import SignupUserDto from './dto/signup-user.dto';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -47,7 +48,7 @@ export default class AuthController {
     status: 500,
     description: 'Internal Server Error: Something went wrong.',
   })
-  async signUp(@Body() payload: UserEmailDto) {
+  async signUp(@Body() payload: SignupUserDto) {
     const data = await this.authService.create(payload);
 
     return {

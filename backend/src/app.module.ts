@@ -10,9 +10,20 @@ import AuthModule from './modules/auth/auth.module';
 import CategoryModule from './modules/category/category.module';
 import UserRegistrationModule from './modules/user-registration/user-registration.module';
 import FormModule from './modules/form/form.module';
+import { AppSharedModule } from './modules/app-shared/app-shared.module';
+import UploadedFileModule from './modules/file/uploaded-file.module';
+import { BullModule } from '@nestjs/bull';
+import QueueModule from './modules/queue-module/queue.module';
 
 @Module({
   imports: [
+    BullModule.forRoot({
+      redis: {
+        host: 'localhost',
+        port: 6379,
+      },
+    }),
+
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [`.env`],
@@ -40,7 +51,10 @@ import FormModule from './modules/form/form.module';
       },
     }),
 
+    QueueModule,
+    UploadedFileModule,
     UserModule,
+    AppSharedModule,
     AuthModule,
     CategoryModule,
     UserRegistrationModule,

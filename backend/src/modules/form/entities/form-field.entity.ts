@@ -1,6 +1,6 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
-import CustomBaseEntity from 'src/common/infra/base-classes/base.entity';
-import { toLowerCaseTransformer } from 'src/common/utils/helper';
+import CustomBaseEntity from '../../../common/infra/base-classes/base.entity';
+import { toLowerCaseTransformer } from '../../../common/utils/helper';
 import { Form } from './form.entity';
 import { FormSection } from './form-section.entity';
 

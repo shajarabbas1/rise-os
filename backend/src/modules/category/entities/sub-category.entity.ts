@@ -1,7 +1,7 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import CustomBaseEntity from '../../../common/infra/base-classes/base.entity';
 import Category from './category.entity';
-import { toLowerCaseTransformer } from 'src/common/utils/helper';
+import { toLowerCaseTransformer } from '../../../common/utils/helper';
 
 @Entity({ name: 'sub_categories' })
 export default class SubCategory extends CustomBaseEntity {

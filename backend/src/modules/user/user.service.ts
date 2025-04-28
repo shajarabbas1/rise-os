@@ -13,8 +13,12 @@ import User from './entities/user.entity';
 import { FindManyOptions, Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import UpdateUserDto from './dto/update-user.dto';
-import MailGunService from '../app-shared/services/mail-gun.service';
 import UserEmailDto from '../auth/dto/email.dto';
+import SignupUserDto from '../auth/dto/signup-user.dto';
+import EmailTemplateService from '../app-shared/services/email-template.service';
+import { EmailTemplateConstant } from 'src/constant';
+import HandlebarService from '../app-shared/services/handlebar.service';
+import QueueService from '../queue-module/queue.service';
 
 @Injectable()
 export default class UserService {
@@ -22,7 +26,10 @@ export default class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
 
-    private mailGunService: MailGunService,
+    private emailTemplateService: EmailTemplateService,
+    private handlebarService: HandlebarService,
+
+    private queueService: QueueService,
   ) {}
 
   generateOTP() {
@@ -80,8 +87,9 @@ export default class UserService {
     return user;
   }
 
-  async create(payload: UserEmailDto) {
-    const { email } = payload;
+  async create(payload: SignupUserDto) {
+    const { email, fullName, password } = payload;
+    const hashedPassword = await hash(password, 10);
 
     // Check if the email is already in use
     const existingRecord = await this.findByEmail(email, false);
@@ -99,15 +107,20 @@ export default class UserService {
     const user = this.userRepository.create({
       email,
       emailOTP: this.generateOTP(),
+      password: hashedPassword,
+      fullName,
     });
 
-    // send email to user for email verification
-    // await this.mailGunService.sendEmail(
-    //   email,
-    //   'Please verify your email.',
-    //   'Below is your OTP code for email verification',
-    //   `<strong> ${emailOTP}</strong>`,
-    // );
+    const emailTemplate = await this.emailTemplateService.findById(
+      EmailTemplateConstant.welcomeEmailId,
+    );
+
+    const html = this.handlebarService.compile(emailTemplate.htmlContent, {
+      fullName: user.fullName,
+    });
+
+    const emailData = { to: email, subject: emailTemplate.subject, html };
+    await this.queueService.queueEmail(emailData);
 
     return await this.userRepository.save(user);
   }
@@ -192,21 +205,6 @@ export default class UserService {
 
     await this.userRepository.update(user.id, { forgetPasswordToken: token });
 
-    // send email to user including link to update password
-    await this.mailGunService.sendEmail(
-      email,
-      'Use the link to reset your password',
-      'Click on the link below to reset your password',
-      `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
-        <h2 style="color: #333;">Reset Your Password</h2>
-        <p>Hello,</p>
-        <p>You recently requested to reset your password. Click the button below to proceed:</p>
-        <a href="${forgetPasswordURL}" style="display: inline-block; padding: 10px 15px; font-size: 16px; color: white; background-color: #007bff; text-decoration: none; border-radius: 5px;">Reset Password</a>
-        <p>If you did not request this, please ignore this email.</p>
-        <p>Thanks, <br/> Your App Team</p>
-      </div>`,
-    );
-
     return true;
   }
 
@@ -227,14 +225,6 @@ export default class UserService {
 
     user.emailOTP = emailOTP;
     await this.userRepository.save(user);
-
-    // send email to user for email verification
-    // await this.mailGunService.sendEmail(
-    //   email,
-    //   'Please verify your email.',
-    //   'Below is your OTP code for email verification',
-    //   `<strong> ${emailOTP}</strong>`,
-    // );
 
     return true;
   }

@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: rise_postgres
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data_rise:/var/lib/postgresql/data
+
+  redis:
+    image: redis:6.2.14
+    container_name: rise_redis
+    volumes:
+      - redis_data_rise:/data
+    ports:
+      - '6379:6379'
+
+  backend:
+    build: ./
+    container_name: rise_backend
+    volumes:
+      - ./:/app/
+    ports:
+      - '5000:5000'
+      - '9229:9229'
+    depends_on:
+      - postgres
+      - redis
+    env_file: '.env'
+
+volumes:
+  postgres_data_rise:
+    driver: local
+  redis_data_rise:
+    driver: local

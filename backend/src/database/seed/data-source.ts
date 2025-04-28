@@ -6,15 +6,37 @@ import DatabaseConfig from '../../config/db.config';
 import User from '../../modules/user/entities/user.entity';
 import Category from '../../modules/category/entities/category.entity';
 import SubCategory from '../../modules/category/entities/sub-category.entity';
+import EmailTemplate from '../../modules/app-shared/entities/email-template.entity';
+import { Form } from '../../modules/form/entities/form.entity';
+import { FormField } from '../../modules/form/entities/form-field.entity';
+import { FormSection } from '../../modules/form/entities/form-section.entity';
+import UserSubCategory from '../../modules/user-registration/entities/user-sub-category.entity';
+import UserCategory from '../../modules/user-registration/entities/user-category.entity';
 
 import UserSeedService from './seed-services/user.seeder.service';
 import CategorySeedService from './seed-services/category.seeder.service';
 import SubCategorySeedService from './seed-services/sub-category.seeder.service';
+import EmailTemplateSeedService from './seed-services/email-template.seeder.service';
 
 export const DataSourceOption: DataSourceOptions & SeederOptions = {
   ...DatabaseConfig(),
-  entities: [User, Category, SubCategory], // Add all entities here
-  seeds: [UserSeedService, CategorySeedService, SubCategorySeedService], // Add all seeder services here
+  entities: [
+    User,
+    Category,
+    SubCategory,
+    Form,
+    FormField,
+    FormSection,
+    EmailTemplate,
+    UserCategory,
+    UserSubCategory,
+  ], // Add all entities here
+  seeds: [
+    UserSeedService,
+    CategorySeedService,
+    SubCategorySeedService,
+    EmailTemplateSeedService,
+  ], // Add all seeder services here
 };
 
 const dataSource = new DataSource(DataSourceOption);
@@ -33,6 +55,7 @@ if (require.main === module) {
         user: UserSeedService,
         category: CategorySeedService,
         'sub-category': SubCategorySeedService,
+        'email-template': EmailTemplateSeedService,
       };
 
       if (!seederName) {

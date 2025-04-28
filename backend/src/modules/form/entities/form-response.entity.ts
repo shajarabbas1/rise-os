@@ -1,7 +1,7 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
-import CustomBaseEntity from 'src/common/infra/base-classes/base.entity';
+import CustomBaseEntity from '../../../common/infra/base-classes/base.entity';
 import { Form } from './form.entity';
-import User from 'src/modules/user/entities/user.entity';
+import User from '../../../modules/user/entities/user.entity';
 
 @Entity({ name: 'form_responses' })
 export class FormResponse extends CustomBaseEntity {

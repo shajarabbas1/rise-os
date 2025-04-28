@@ -1,7 +1,7 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
-import CustomBaseEntity from 'src/common/infra/base-classes/base.entity';
-import User from 'src/modules/user/entities/user.entity';
-import Category from 'src/modules/category/entities/category.entity';
+import CustomBaseEntity from '../../../common/infra/base-classes/base.entity';
+import User from '../../../modules/user/entities/user.entity';
+import Category from '../../../modules/category/entities/category.entity';
 
 @Entity({ name: 'user_categories' })
 export default class UserCategory extends CustomBaseEntity {

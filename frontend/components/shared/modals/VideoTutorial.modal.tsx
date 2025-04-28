@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import CircleCard from '../cards/CircleCount.card';
 import Row from '../row';
 import { CardHeading } from '../typography';
@@ -14,6 +15,21 @@ const VideoTutorialModal: React.FC<IVideoTutorialModalProps> = ({
   onCancel,
   stepNumber,
 }) => {
+  //close the modal on clicking the escape button
+  useEffect(() => {
+    const handleEscapePress = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onCancel();
+      }
+    };
+
+    window.addEventListener('keydown', handleEscapePress);
+
+    return () => {
+      window.removeEventListener('keydown', handleEscapePress);
+    };
+  }, [onCancel]);
+
   return (
     <div
       onClick={onCancel}

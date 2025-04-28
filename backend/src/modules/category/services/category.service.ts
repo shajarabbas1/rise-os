@@ -75,7 +75,7 @@ export default class CategoryService {
     paginationArgs: OffsetPaginationArgs,
     filterCategoryInput: FilterCategoryDto,
   ) {
-    const { name, description, createdAt, updatedAt, ...otherFilters } =
+    const { name, description, tags, createdAt, updatedAt, ...otherFilters } =
       filterCategoryInput;
 
     // Prepare filterOptions
