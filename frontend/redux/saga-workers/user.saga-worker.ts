@@ -6,7 +6,6 @@ import { loginService, signUp, setUserNameAndPasword } from '@/services/auth';
 import { AxiosResponse } from 'axios';
 import { PayloadAction } from '@reduxjs/toolkit';
 
-
 interface IUser {
   isAdmin: boolean;
   [key: string]: any;
@@ -42,7 +41,7 @@ function* loginUserSaga(action: PayloadAction<LoginRequestPayload>) {
       password,
     });
 
-    const data = response.data;
+    const data = response?.data?.data;
 
     yield put(
       userActions.loginSuccess({

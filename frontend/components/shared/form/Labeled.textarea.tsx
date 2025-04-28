@@ -1,10 +1,10 @@
-// CustomTextarea.tsx
 import React from 'react';
-import { useFormContext, Controller, RegisterOptions } from 'react-hook-form';
+import { RegisterOptions } from 'react-hook-form';
+import { FormLabel } from '../typography';
 
 interface CustomTextareaProps {
   name: string;
-  id: string;
+  id?: string;
   register?: any;
   errors?: any;
   label?: string;
@@ -14,7 +14,7 @@ interface CustomTextareaProps {
   className?: string;
 }
 
-const CustomTextarea: React.FC<CustomTextareaProps> = ({
+const LabeledTextarea: React.FC<CustomTextareaProps> = ({
   name,
   id,
   label,
@@ -31,11 +31,7 @@ const CustomTextarea: React.FC<CustomTextareaProps> = ({
 
   return (
     <div className="mb-4">
-      {label && (
-        <label htmlFor={id} className="block mb-1 font-medium text-gray-700">
-          {label}
-        </label>
-      )}
+      {label && <FormLabel htmlFor={name} label={label} />}
 
       <textarea
         id={id}
@@ -53,4 +49,4 @@ const CustomTextarea: React.FC<CustomTextareaProps> = ({
   );
 };
 
-export default CustomTextarea;
+export default LabeledTextarea;

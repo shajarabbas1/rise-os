@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
+import { PAGES_ROUTES } from '@/constants/routes.constants';
 
 export default function ProtectedLayout({
   children,
@@ -15,7 +15,7 @@ export default function ProtectedLayout({
 
   useEffect(() => {
     if (!user) {
-      router.push('/login');
+      router.push(PAGES_ROUTES.login);
     }
   }, [user, router]);
 

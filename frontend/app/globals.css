@@ -1,5 +1,12 @@
 @import 'tailwindcss';
 
+.noScrollbar {
+  scrollbar-width: none; /* For Firefox */
+}
+.noScrollbar::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

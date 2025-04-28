@@ -1,78 +1,130 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { emailTemplateData } from '@/data/email-temlate.data';
-import { IEmailTemplate } from '@/types/email-template.type';
-import { useRouter } from 'next/navigation';
 import {
   CardDescription,
-  PrimaryHeading,
+  CardHeading,
+  SectionHeading,
 } from '@/components/shared/typography';
 import Row from '@/components/shared/row';
-import IconButton from '@/components/shared/button';
+import EmailTemplateCard from '@/components/shared/cards/EmailTemplate.card';
+import { useRouter } from 'next/navigation';
+import { PAGES_ROUTES } from '@/constants/routes.constants';
+import EmailTemplateModal from '@/components/shared/modals/EmailTemplate.modal';
+import { IEmailTemplate } from '@/types/email-template.type';
+import ConfirmationModal from '@/components/shared/modals/Confirmation.modal';
+import CircleCard from '@/components/shared/cards/CircleCount.card';
+import ReactIcon from '@/components/shared/react-icon';
+import { MdOutlineNavigateNext } from 'react-icons/md';
+import { GrFormPrevious } from 'react-icons/gr';
 
-const EmailTemplateRow = ({ template }: { template: IEmailTemplate }) => {
+const Page = () => {
   const router = useRouter();
-  const handleDelete = () => {};
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const handleView = () => {};
+  const [showViewModal, setShowViewModal] = useState<boolean>(false);
+  const [showConfirmationModal, setShowConfirmationModal] =
+    useState<boolean>(false);
+  const [selectedTemplate, setSelectedTemplate] =
+    useState<IEmailTemplate | null>(null);
 
-  const handleEdit = () => {
-    router.push(`/email-template/${template.id}`);
+  const toggleConfirmationModal = () =>
+    setShowConfirmationModal(!showConfirmationModal);
+
+  const toggleViewModal = (data: IEmailTemplate) => {
+    setShowViewModal(!showViewModal);
+    setSelectedTemplate(data);
   };
 
-  return (
-    <Row className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
-      <Row className="flex-1">
-        <PrimaryHeading
-          className="text-lg font-semibold text-gray-800"
-          title={template.subject}
-        />
-        <CardDescription
-          className="text-sm text-gray-600"
-          title={template.group}
-        />
-        <p className="text-sm text-gray-600">
-          Status: {template.archived ? 'Archived' : 'Active'}
-        </p>
-      </Row>
-      <Row className="flex space-x-2">
-        <IconButton
-          handleOnClick={handleDelete}
-          className="px-3 py-1 text-sm text-white bg-red-500 rounded-md hover:bg-red-600 transition-colors"
-          title="Delete"
-        />
+  const onDeleteClick = (data: IEmailTemplate) => {
+    setSelectedTemplate(data);
+    toggleConfirmationModal();
+  };
 
-        <IconButton
-          handleOnClick={handleView}
-          className="px-3 py-1 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600 transition-colors"
-          title="View"
-        />
-        <IconButton
-          handleOnClick={handleEdit}
-          className="px-3 py-1 text-sm text-white bg-green-500 rounded-md hover:bg-green-600 transition-colors"
-          title="Edit"
-        />
+  const handleDeleteTemplate = () => toggleConfirmationModal();
+
+  return (
+    <Row className="p-6 flex-col items-end">
+      <SectionHeading
+        title={'Email Templates'}
+        className="w-full text-center"
+      />
+
+      <Row className="w-full items-center justify-between my-2 p-2 bg-slate-50 border rounded-md">
+        {[
+          { title: 'Subject', className: 'w-[50%] lg:w-[60%] text-start' },
+          { title: 'Group', className: 'w-[16%] border-x' },
+          { title: 'Archived', className: 'w-[12%] lg:w-[10%] border-r' },
+          { title: 'Actions', className: 'w-[10%] lg:w-[8%]' },
+        ].map(item => (
+          <CardHeading
+            key={item.title}
+            title={item.title}
+            className={`text-center ${item.className}`}
+          />
+        ))}
       </Row>
+
+      <Row className="w-full flex-col gap-2 items-center justify-between">
+        {emailTemplateData.map((item, index) => (
+          <EmailTemplateCard
+            key={item.id}
+            subject={item.subject}
+            group={item.group}
+            archived={item.archived}
+            constainerClassName={`${index % 2 === 0 ? 'bg-slate-100' : 'bg-slate-200'}`}
+            handleViewClick={() => toggleViewModal(item)}
+            handleEditClick={() =>
+              router.push(`${PAGES_ROUTES.emailTemplate}/${item.id}`)
+            }
+            handleDeleteClick={() => onDeleteClick(item)}
+          />
+        ))}
+      </Row>
+
+      <Row className="w-full items-center justify-between gap-2 mt-4">
+        {/* total pages */}
+        <Row className="gap-2 items-center">
+          <CardDescription title={'Total Pages'} />
+          <CardHeading title={'10'} />
+        </Row>
+
+        {/* page navigation */}
+        <Row className="gap-2 items-center">
+          <ReactIcon
+            Icon={GrFormPrevious}
+            className={` ${currentPage === 1 ? 'text-gray-400 cursor-not-allowed' : 'cursor-pointer'}`}
+            onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}
+          />
+
+          <CircleCard
+            count={currentPage}
+            className=" bg-slate-100  size-[40px] cursor-none"
+          />
+
+          <ReactIcon
+            Icon={MdOutlineNavigateNext}
+            className="cursor-pointer"
+            onClick={() => setCurrentPage(currentPage + 1)}
+          />
+        </Row>
+      </Row>
+
+      {showConfirmationModal && (
+        <ConfirmationModal
+          onConfirm={handleDeleteTemplate}
+          onCancel={toggleConfirmationModal}
+        />
+      )}
+
+      {showViewModal && selectedTemplate && (
+        <EmailTemplateModal
+          onCancel={() => setShowViewModal(!showViewModal)}
+          templateData={selectedTemplate}
+        />
+      )}
     </Row>
   );
 };
 
-const EmailTemplateForm = () => {
-  return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-4xl mx-auto">
-        <PrimaryHeading
-          className="text-3xl font-bold text-gray-800 mb-6"
-          title={'Email Templates'}
-        />
-        <div className="space-y-4">
-          {emailTemplateData.map(template => (
-            <EmailTemplateRow key={template.id} template={template} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default EmailTemplateForm;
+export default Page;

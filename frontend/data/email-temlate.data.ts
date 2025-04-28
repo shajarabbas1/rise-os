@@ -9,7 +9,7 @@ export const emailTemplateData = [
       'Sent when a user signs up or creates an account. Contains basic onboarding message.',
     textContent:
       "Welcome, {{name}}!\n          We're excited to have you on board. You can now start exploring all the amazing features we have to offer.\n    \n          If you have any questions, feel free to reply to this email.\n    \n          Cheers,\n          The Team",
-    archived: false,//
+    archived: false, //
     isSystemDefault: true,
   },
 ];

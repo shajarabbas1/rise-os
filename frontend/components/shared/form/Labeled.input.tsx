@@ -17,8 +17,6 @@ interface ILabeledInputProps {
   label?: string;
   errors?: any;
   showErrors?: boolean;
-  startData?: any;
-  endData?: any;
 }
 
 const LabeledInput: React.FC<ILabeledInputProps> = ({
@@ -32,8 +30,6 @@ const LabeledInput: React.FC<ILabeledInputProps> = ({
   labelClassName,
   containerClassName,
   errors,
-  startData,
-  endData,
   showErrors = true,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -44,12 +40,11 @@ const LabeledInput: React.FC<ILabeledInputProps> = ({
       {label && (
         <FormLabel htmlFor={name} label={label} className={labelClassName} />
       )}
+
       <div className="w-full relative">
         <input
           id={name}
           name={name}
-          startData={startData}
-          endData={endData}
           className={`w-full outline-slate-500 pt-[10px] pb-[9px] px-[17px] bg-slate-100  placeholder:text-gray-300 ${inter.className} ${className}`}
           placeholder={placeHolder}
           {...register(name, validationRules)}
@@ -67,6 +62,7 @@ const LabeledInput: React.FC<ILabeledInputProps> = ({
           </button>
         )}
       </div>
+
       {showErrors && errors?.[name] && (
         <p className={`text-red-600 mt-[4px] ${inter.className}`}>
           {errors[name].message}

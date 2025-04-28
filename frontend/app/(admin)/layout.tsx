@@ -13,10 +13,12 @@ export default function ProtectedLayout({
 }) {
   const user = useSelector((state: any) => state.user.user);
   const router = useRouter();
+
+
   useEffect(() => {
     if (!user) {
       router.push(PAGES_ROUTES.login);
-    } else if (user.data.role !== UserRoleEnum.SUPER_ADMIN) {
+    } else if (user.role !== UserRoleEnum.SUPER_ADMIN) {
       router.push(PAGES_ROUTES.careerDashboard);
     }
   }, [user, router]);

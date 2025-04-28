@@ -1,13 +1,19 @@
 import Row from '@/components/shared/row';
-import { PrimaryHeading } from '@/components/shared/typography';
+import { getTemplateByIdService } from '@/services/email-template';
+import EditEmailTemplateForm from './EditEmailTemplate.form';
 
 interface IPageProps {
   params: { id: string };
 }
-const Page: React.FC<IPageProps> = async ({ params: { id } }) => {
+
+const Page = async ({ params }: IPageProps) => {
+  const { id } = await params;
+
+  const templateData = await getTemplateByIdService(id);
+
   return (
     <Row className="w-full h-full flex justify-center items-center">
-      <PrimaryHeading className="mt-1/2" title={`Email template with ${id}`} />
+      <EditEmailTemplateForm data={templateData.data.data} />
     </Row>
   );
 };

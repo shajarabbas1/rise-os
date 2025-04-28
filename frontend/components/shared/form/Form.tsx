@@ -11,7 +11,7 @@ import { IForm, IFormField } from '../../../types/form.types';
 import IconButton from '../button';
 import CustomRadioGroup from './Labeled.radio';
 import CustomSelect from './Labeled.select';
-import CustomTextarea from './Labeled.textarea';
+import LabeledTextarea from './Labeled.textarea';
 const DynamicForm = ({ formData }: { formData: IForm }) => {
   const {
     register,
@@ -124,7 +124,7 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
 
       case 'textarea':
         return (
-          <CustomTextarea name={name} id={id} label={label} placeholder={placeholder} rows={4} validationRules={validationRules} className={baseInputClass} register={register} errors={errors}/>
+          <LabeledTextarea name={name} id={id} label={label} placeholder={placeholder} rows={4} validationRules={validationRules} className={baseInputClass} register={register} errors={errors}/>
         );
 
       case 'select':

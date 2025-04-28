@@ -28,7 +28,7 @@ const IconButton: React.FC<IButton> = ({
 }) => {
   return (
     <Row
-      className={`rounded-md gap-1  items-center ${className} ${!disabled ? 'cursor-pointer' : ''} `}
+      className={`rounded-md gap-1 justify-center items-center ${className} ${!disabled ? 'cursor-pointer' : ''} `}
     >
       {Icon && (
         <ReactIcon
