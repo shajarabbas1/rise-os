@@ -16,7 +16,7 @@ import {
   passwordField,
 } from '@/constants/form-fields.constants';
 import Image from 'next/image';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { authBGImage } from '@/constants';
 import CircleCard from '@/components/shared/cards/CircleCount.card';
 import { getFirstLetter } from '@/utils/helper';
@@ -45,7 +45,7 @@ const Page = () => {
   }, [email, router]);
 
   const {
-    control,
+    register,
     handleSubmit,
     reset,
     watch,
@@ -121,10 +121,10 @@ const Page = () => {
               key={item.name}
               name={item.name}
               label={item.label}
-              control={control}
+              register={register}
               placeHolder={item.placeHolder}
               type={item.type}
-              rules={item.rules}
+              validationRules={item.rules}
               errors={errors}
             />
           ))}

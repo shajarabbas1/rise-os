@@ -1,42 +1,40 @@
 import React, { useState } from 'react';
-import { Controller } from 'react-hook-form';
-import Row from '../row';
-import { FormLabel } from '../typography';
 import { Inter } from 'next/font/google';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
+import Row from '../row';
+import { FormLabel } from '../typography';
 const inter = Inter({ subsets: ['latin'] });
 
 interface ILabeledInputProps {
   name: string;
   className?: string;
   placeHolder?: string;
-  control?: any;
-  rules?: any;
-  errors?: any;
-  type?: string;
-  label?: string;
-  labelClassName?: string;
+  validationRules?: any;
+  type: string;
+  register?: any;
   containerClassName?: string;
-  value?: string | null;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // Added onChange prop
+  labelClassName?: string;
+  label?: string;
+  errors?: any;
   showErrors?: boolean;
+  startData?: any;
+  endData?: any;
 }
 
 const LabeledInput: React.FC<ILabeledInputProps> = ({
   name,
   className,
   placeHolder,
-  control,
-  rules,
-  errors,
-  type = 'text',
+  type,
+  validationRules,
+  register,
   label,
   labelClassName,
   containerClassName,
-  value = null,
-  onChange,
+  errors,
+  startData,
+  endData,
   showErrors = true,
-  ...restProps
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === 'password';
@@ -46,28 +44,16 @@ const LabeledInput: React.FC<ILabeledInputProps> = ({
       {label && (
         <FormLabel htmlFor={name} label={label} className={labelClassName} />
       )}
-
       <div className="w-full relative">
-        <Controller
+        <input
+          id={name}
           name={name}
-          control={control}
-          rules={rules}
-          render={({ field }) => (
-            <input
-              {...field}
-              id={name}
-              name={name}
-              value={value || field.value}
-              className={`w-full outline-slate-500 pt-[10px] pb-[9px] px-[17px] bg-slate-100  placeholder:text-gray-300 ${inter.className} ${className}`}
-              placeholder={placeHolder}
-              type={isPassword && !showPassword ? 'password' : 'text'}
-              onChange={e => {
-                field.onChange(e); // Call the field's onChange from react-hook-form
-                if (onChange) onChange(e); // Call the onChange passed as prop if it's provided
-              }}
-              {...restProps}
-            />
-          )}
+          startData={startData}
+          endData={endData}
+          className={`w-full outline-slate-500 pt-[10px] pb-[9px] px-[17px] bg-slate-100  placeholder:text-gray-300 ${inter.className} ${className}`}
+          placeholder={placeHolder}
+          {...register(name, validationRules)}
+          type={isPassword && !showPassword ? 'password' : type}
         />
 
         {isPassword && (
@@ -81,7 +67,6 @@ const LabeledInput: React.FC<ILabeledInputProps> = ({
           </button>
         )}
       </div>
-
       {showErrors && errors?.[name] && (
         <p className={`text-red-600 mt-[4px] ${inter.className}`}>
           {errors[name].message}

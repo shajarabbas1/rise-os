@@ -5,7 +5,7 @@ import { userActions } from '../slices/user.slice';
 import { loginService, signUp, setUserNameAndPasword } from '@/services/auth';
 import { AxiosResponse } from 'axios';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { toast } from 'react-toastify';
+
 
 interface IUser {
   isAdmin: boolean;
@@ -80,7 +80,7 @@ function* validateEmailSaga(
       // Email already exists
       const errorMessage =
         'This email is already registered. Please use another one.';
-      toast.error(errorMessage);
+
       yield put(userActions.validateEmailFailure(errorMessage));
 
       if (onError) yield call(onError, errorMessage);
@@ -95,7 +95,7 @@ function* validateEmailSaga(
       error?.response?.data?.message ||
       error?.message ||
       'Email validation failed';
-    toast.error(errorMessage);
+
     yield put(userActions.validateEmailFailure(errorMessage));
   }
 }

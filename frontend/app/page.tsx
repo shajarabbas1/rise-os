@@ -1,6 +1,6 @@
 'use client';
 import RegisterAsProvider from '@/components/layout/feature/career-dashboard/registration-steps/RegisterAsProvider';
-import DashboardLayout from './compliance/layout';
+import DashboardLayout from './(protective)/compliance/layout';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { PAGES_ROUTES } from '@/constants/routes.constants';

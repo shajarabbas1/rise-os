@@ -41,7 +41,7 @@ const Page = () => {
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
   const {
-    control,
+    register,
     handleSubmit,
     reset,
     formState: { errors },
@@ -52,7 +52,7 @@ const Page = () => {
       rememberMe: false,
     },
   });
-  
+
   const onSubmit = (data: IFormData) => {
     setIsProcessing(true);
 
@@ -112,10 +112,10 @@ const Page = () => {
             key={index}
             name={item.name}
             label={item.label}
-            control={control}
+            register={register}
             placeHolder={item?.placeHolder}
             type={item.type}
-            rules={item.rules}
+            validationRules={item.rules}
             errors={errors}
           />
         ))}
@@ -125,7 +125,7 @@ const Page = () => {
             className="font-[700]"
             name="rememberMe"
             label="Remember Me"
-            control={control}
+            register={register}
             errors={errors}
           />
 

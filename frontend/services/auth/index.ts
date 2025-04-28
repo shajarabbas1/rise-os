@@ -21,12 +21,12 @@ export const loginService = async (payload: ILoginPayload) => {
 
 // check if the user exist with the provided email
 export const signUp = async (payload: EmailValidationPayload) => {
-  return await axiosInstance.post(ENDPOINT.signup, payload);
+  return await axiosInstance.post(ENDPOINT.validateEmail, payload);
 };
 
 // set user name and password and get the token from the backend - work same as signup
 export const setUserNameAndPasword = async (
   payload: ISetUserNameAndPasword,
 ) => {
-  return await axiosInstance.put(ENDPOINT.setEmailAndPassword, payload);
+  return await axiosInstance.put(ENDPOINT.signup, payload);
 };

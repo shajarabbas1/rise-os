@@ -34,7 +34,7 @@ const Page = () => {
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
   const {
-    control,
+    register,
     handleSubmit,
     reset,
     formState: { errors },
@@ -96,10 +96,10 @@ const Page = () => {
             key={index}
             name={item.name}
             label={item.label}
-            control={control}
+            register={register}
             placeHolder={item?.placeHolder}
             type={item.type}
-            rules={item.rules}
+            validationRules={item.rules}
             errors={errors}
           />
         ))}
@@ -108,7 +108,7 @@ const Page = () => {
           className="font-[700]"
           name="isAgree"
           label="I agree to all the Terms of Service and Privacy Policy."
-          control={control}
+          register={register}
           errors={errors}
         />
 
