@@ -11,6 +11,7 @@ import { CreateEmailTemplateDto } from '../dto/create-email-template.dto';
 import OffsetPaginationArgs from 'src/common/infra/offset-pagination/offset-pagination.args';
 import FilterEmailTemplateDto from '../dto/filter-email-template.dto';
 import offsetPaginate from 'src/common/infra/offset-pagination/offset-paginate';
+import UpdateEmailTemplateDto from '../dto/update-email-template.dto';
 
 @Injectable()
 export default class EmailTemplateService {
@@ -51,6 +52,25 @@ export default class EmailTemplateService {
     const newEmailTemplate = this.emailTemplateRepository.create(payload);
 
     return await this.emailTemplateRepository.save(newEmailTemplate);
+  }
+
+  async update(
+    id: string,
+    payload: UpdateEmailTemplateDto,
+  ): Promise<EmailTemplate> {
+    const { subject, metaData, htmlContent } = payload;
+
+    const updateData = await this.emailTemplateRepository.update(id, {
+      subject,
+      metaData,
+      htmlContent,
+    });
+
+    if (updateData.affected === 0) {
+      throw new NotFoundException('Email template not found against given Id');
+    }
+
+    return await this.findById(id);
   }
 
   async delete(id: string): Promise<boolean> {

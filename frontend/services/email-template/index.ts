@@ -14,3 +14,16 @@ export const getAllTemplatesService = async (page: number) => {
     params: { page, limit: 10 },
   });
 };
+
+export interface IUpdateEmailTemplate {
+  subject: string;
+  htmlContent: string;
+  metaData: string;
+}
+
+export const updateTemplateByIdService = async (
+  id: string,
+  payload: IUpdateEmailTemplate,
+) => {
+  return await axiosInstance.put(ENDPOINT.getEmailTemplateById(id), payload);
+};

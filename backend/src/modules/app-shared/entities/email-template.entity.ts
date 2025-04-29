@@ -18,7 +18,6 @@ export default class EmailTemplate extends CustomBaseEntity {
   @Column({
     type: 'text',
     nullable: false,
-    unique: true,
   })
   htmlContent: string;
 
@@ -31,7 +30,6 @@ export default class EmailTemplate extends CustomBaseEntity {
     type: 'text',
     nullable: true,
     default: null,
-    unique: true,
   })
   textContent: string;
 

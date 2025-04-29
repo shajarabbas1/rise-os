@@ -7,6 +7,7 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import {
@@ -22,6 +23,7 @@ import EmailTemplateService from '../services/email-template.service';
 import { CreateEmailTemplateDto } from '../dto/create-email-template.dto';
 import FilterEmailTemplateDto from '../dto/filter-email-template.dto';
 import OffsetPaginationArgs from 'src/common/infra/offset-pagination/offset-pagination.args';
+import UpdateEmailTemplateDto from '../dto/update-email-template.dto';
 
 @Controller('email-template')
 @ApiTags('Email Template')
@@ -50,6 +52,44 @@ export default class EmailTemplateController {
     return {
       message: 'Email template details retrieved successfully',
       statusCode: HttpStatus.OK,
+      data,
+    };
+  }
+
+  @Put(':id')
+  @ApiOperation({
+    summary: 'Update an existing email template',
+    description: 'Updates the details of a email template by its unique ID.',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'The unique identifier of the email template to update.',
+  })
+  @ApiBody({
+    type: UpdateEmailTemplateDto,
+    description: 'Updated details of the Email template.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The email template has been successfully updated.',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Email template not found with the provided ID.',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid input data.',
+  })
+  async updateCategory(
+    @Param('id') id: string,
+    @Body() payload: UpdateEmailTemplateDto,
+  ) {
+    const data = await this.emailTemplateService.update(id, payload);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Email template has been successfully updated.',
       data,
     };
   }

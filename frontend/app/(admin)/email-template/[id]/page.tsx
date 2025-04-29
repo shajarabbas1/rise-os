@@ -16,7 +16,7 @@ const Page = async ({ params }: IPageProps) => {
   const templateData = await getTemplateByIdService(id);
   return (
     <Row className="w-full h-full flex justify-center items-center">
-      <EditEmailTemplateForm data={templateData.data.data} />
+      <EditEmailTemplateForm templateData={templateData.data.data} />
     </Row>
   );
 };

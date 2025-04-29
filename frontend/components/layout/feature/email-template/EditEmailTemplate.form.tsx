@@ -8,15 +8,21 @@ import {
   CardDescription,
   SectionHeading,
 } from '@/components/shared/typography';
+import { updateTemplateByIdService } from '@/services/email-template';
 import { IEmailTemplate } from '@/types/email-template.type';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 interface IEditEmailTemplateFormProps {
-  data: IEmailTemplate;
+  templateData: IEmailTemplate;
 }
 
-const EditEmailTemplateForm = ({ data }: IEditEmailTemplateFormProps) => {
+const EditEmailTemplateForm = ({
+  templateData,
+}: IEditEmailTemplateFormProps) => {
+  const router = useRouter();
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
   const {
@@ -25,16 +31,28 @@ const EditEmailTemplateForm = ({ data }: IEditEmailTemplateFormProps) => {
     handleSubmit,
   } = useForm<IEmailTemplate>({
     defaultValues: {
-      subject: data.subject || '',
-      metaData: data.metaData || '',
-      htmlContent: data.htmlContent || '',
+      subject: templateData.subject || '',
+      metaData: templateData.metaData || '',
+      htmlContent: templateData.htmlContent || '',
     },
   });
 
-  const onSubmit = (data: IEmailTemplate) => {
+  const onSubmit = async (data: IEmailTemplate) => {
     setIsProcessing(true);
-    console.log({ data });
 
+    const { htmlContent, metaData, subject } = data;
+
+    const response = await updateTemplateByIdService(templateData.id, {
+      htmlContent,
+      metaData,
+      subject,
+    });
+
+    if (response.data.statusCode === 200) {
+      toast.success(response.data.message);
+      setIsProcessing(false);
+      router.refresh(); // 🔄 Refresh the current page to show updated data
+    }
     setIsProcessing(false);
   };
 
@@ -82,18 +100,18 @@ const EditEmailTemplateForm = ({ data }: IEditEmailTemplateFormProps) => {
 
       <Row className="w-full items-center gap-2 cursor-default">
         <CardDescription
-          title={data.group}
+          title={templateData.group}
           className="bg-indigo-200  rounded-md  px-2 py-1"
         />
 
-        {data.isSystemDefault && (
+        {templateData.isSystemDefault && (
           <CardDescription
             title={'System Generated'}
             className="bg-indigo-200  rounded-md  px-2 py-1"
           />
         )}
 
-        {data.archived && (
+        {templateData.archived && (
           <CardDescription
             title={'Not In Used'}
             className="bg-red-200  rounded-md  px-2 py-1"
