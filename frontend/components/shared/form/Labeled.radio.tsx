@@ -1,6 +1,7 @@
 // CustomRadioGroup.tsx
 import React from 'react';
 import { useFormContext, Controller, RegisterOptions } from 'react-hook-form';
+import { FormLabel } from '../typography';
 export interface Option {
   value: string;
   label: string;
@@ -15,6 +16,7 @@ interface CustomRadioGroupProps {
   options?: Option[];
   validationRules?: RegisterOptions;
   className?: string;
+  labelClassName?: string;
 }
 
 const CustomRadioGroup: React.FC<CustomRadioGroupProps> = ({
@@ -25,10 +27,17 @@ const CustomRadioGroup: React.FC<CustomRadioGroupProps> = ({
   options = [],
   validationRules = {},
   className = '',
+  labelClassName,
 }) => {
   return (
     <div className={`mb-4 ${className}`}>
-      {label && <p className="block mb-2 font-medium text-gray-700">{label}</p>}
+      {label && (
+        <FormLabel
+          htmlFor={name}
+          label={label}
+          className={`${labelClassName}`}
+        />
+      )}
 
       <div className="space-y-2">
         {options.map(option => (
@@ -42,10 +51,12 @@ const CustomRadioGroup: React.FC<CustomRadioGroupProps> = ({
               className="text-blue-600 focus:ring-blue-500"
               {...register(name, validationRules)}
             />
+
             <span className="text-gray-700">{option.label}</span>
           </label>
         ))}
       </div>
+
       {errors[name] && (
         <p className="mt-1 text-sm text-red-600">
           {errors[name]?.message as string}
