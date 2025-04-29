@@ -1,7 +1,7 @@
 import React from 'react';
 
-import EmailTemplateListing from '../../../components/layout/feature/email-template/TemplateListing';
 import { getAllTemplatesService } from '@/services/email-template';
+import EmailTemplateListing from '@/components/layout/feature/email-template/TemplateListing';
 
 interface IPageProps {
   searchParams: {
