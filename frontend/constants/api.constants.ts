@@ -3,5 +3,6 @@ export const ENDPOINT = {
   signup: '/auth/signup',
   validateEmail: '/auth/validate-email',
 
+  emailTemplates: 'email-template',
   getEmailTemplateById: (id: string) => `email-template/${id}`,
 };

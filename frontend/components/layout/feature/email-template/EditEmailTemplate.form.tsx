@@ -30,7 +30,6 @@ const EditEmailTemplateForm = ({ data }: IEditEmailTemplateFormProps) => {
       htmlContent: data.htmlContent || '',
     },
   });
-  console.log({data})
 
   const onSubmit = (data: IEmailTemplate) => {
     setIsProcessing(true);

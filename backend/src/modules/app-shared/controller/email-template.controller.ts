@@ -131,6 +131,12 @@ export default class EmailTemplateController {
     description: 'Number of results to return',
   })
   @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Page number to start from',
+  })
+  @ApiQuery({
     name: 'offset',
     required: false,
     type: Number,

@@ -9,6 +9,7 @@ interface IEmailTemplateCardProp {
   subject: string;
   group: string;
   archived: boolean;
+  isSystemDefault: boolean;
   handleViewClick: () => void;
   handleEditClick: () => void;
   handleDeleteClick: () => void;
@@ -18,6 +19,7 @@ const EmailTemplateCard: React.FC<IEmailTemplateCardProp> = ({
   subject,
   archived,
   group,
+  isSystemDefault,
   constainerClassName,
   handleDeleteClick,
   handleEditClick,
@@ -35,7 +37,7 @@ const EmailTemplateCard: React.FC<IEmailTemplateCardProp> = ({
 
     <CardDescription
       title={`${archived ? 'Y' : 'N'}`}
-      className={`w-[12%] lg:w-[10%] border-r ${archived?"text-red-600":"text-green-600"}`}
+      className={`w-[12%] lg:w-[10%] border-r ${archived ? 'text-red-600' : 'text-green-600'}`}
     />
 
     <Row className="items-center gap-2 cursor-pointer w-[10%] lg:w-[8%] justify-center">
@@ -44,25 +46,30 @@ const EmailTemplateCard: React.FC<IEmailTemplateCardProp> = ({
           Icon: BsFillEyeFill,
           className: 'text-green-600',
           onClick: handleViewClick,
+          show: true,
         },
         {
           Icon: BiSolidMessageSquareEdit,
           className: 'text-indigo-600',
           onClick: handleEditClick,
+          show: !isSystemDefault,
         },
         {
           Icon: MdDelete,
           className: 'text-red-600',
           onClick: handleDeleteClick,
+          show: !isSystemDefault,
         },
-      ].map((item, index) => (
-        <ReactIcon
-          key={index}
-          Icon={item.Icon}
-          className={`size-[20px] ${item.className}`}
-          onClick={item.onClick}
-        />
-      ))}
+      ]
+        .filter(item => item.show)
+        .map((item, index) => (
+          <ReactIcon
+            key={index}
+            Icon={item.Icon}
+            className={`size-[20px] ${item.className}`}
+            onClick={item.onClick}
+          />
+        ))}
     </Row>
   </Row>
 );
