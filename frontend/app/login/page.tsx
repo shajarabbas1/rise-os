@@ -13,11 +13,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { authBGImage } from '@/constants';
-import { useEffect, useState } from 'react';
 import { userActions } from '@/redux/actions/user.action';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
 interface IFormData {
   email: string;
@@ -29,14 +28,6 @@ const Page = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const activeUser = useSelector((state: any) => state.user.user);
-
-  // Redirect safely after render - if the user has not check/validate the email
-  useEffect(() => {
-    if (activeUser) {
-      router.push(PAGES_ROUTES.careerDashboard);
-    }
-  }, [activeUser, router]);
 
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
 

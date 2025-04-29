@@ -34,7 +34,10 @@ export default class AuthService {
   }
 
   async create(payload: SignupUserDto) {
-    return await this.userService.create(payload);
+    const user= await this.userService.create(payload);
+    const accessToken = await this.generateJwt(user);
+   
+    return { ...user, accessToken };
   }
 
   async verifyEmail(emailOTP: string): Promise<boolean> {
@@ -58,7 +61,7 @@ export default class AuthService {
     }
 
     const accessToken = await this.generateJwt(user);
-
+   
     return { ...user, accessToken };
   }
 

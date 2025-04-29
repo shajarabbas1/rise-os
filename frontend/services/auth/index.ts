@@ -16,17 +16,23 @@ export interface ILoginPayload {
 }
 
 export const loginService = async (payload: ILoginPayload) => {
-  return await axiosInstance.post(ENDPOINT.login, payload);
+  return await axiosInstance.post(ENDPOINT.login, payload,{
+    withCredentials:true
+  });
 };
 
 // check if the user exist with the provided email
 export const signUp = async (payload: EmailValidationPayload) => {
-  return await axiosInstance.post(ENDPOINT.validateEmail, payload);
+  return await axiosInstance.post(ENDPOINT.validateEmail, payload,{
+    withCredentials:true
+  });
 };
 
 // set user name and password and get the token from the backend - work same as signup
 export const setUserNameAndPasword = async (
   payload: ISetUserNameAndPasword,
 ) => {
-  return await axiosInstance.put(ENDPOINT.signup, payload);
+  return await axiosInstance.put(ENDPOINT.signup, payload,{
+    withCredentials:true
+  });
 };
