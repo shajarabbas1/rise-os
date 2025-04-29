@@ -1,5 +1,6 @@
 import React from 'react';
-import { useFormContext, Controller, RegisterOptions } from 'react-hook-form';
+import { RegisterOptions } from 'react-hook-form';
+import { FormLabel } from '../typography';
 export interface Option {
   value: string;
   label: string;
@@ -15,6 +16,7 @@ interface CustomSelectProps {
   validationRules?: RegisterOptions;
   placeholder?: string;
   className?: string;
+  labelClassName?: string;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -27,33 +29,32 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   validationRules = {},
   placeholder = 'Select an option',
   className = '',
+  labelClassName,
 }) => {
- 
-
   const baseInputClass =
-    'w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500';
+    'w-full bg-white border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500';
+
   const errorClass = 'border-red-500 focus:ring-red-500 focus:border-red-500';
 
   return (
     <div className="mb-4">
       {label && (
-        <label htmlFor={id} className="block mb-1 font-medium text-gray-700">
-          {label}
-        </label>
+        <FormLabel htmlFor={id} label={label} className={`${labelClassName}`} />
       )}
-    
-          <select
-            id={id}
-            className={`${baseInputClass} ${errors[name] ? errorClass : ''} ${className}`}
-            {...register(name, validationRules)}
-          >
-            <option value="">{placeholder}</option>
-            {options.map(option => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+
+      <select
+        id={id}
+        className={`${baseInputClass} ${errors[name] ? errorClass : ''} ${className}`}
+        {...register(name, validationRules)}
+      >
+        <option value="">{placeholder}</option>
+        {options.map(option => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+
       {errors[name] && (
         <p className="mt-1 text-sm text-red-600">
           {errors[name]?.message as string}

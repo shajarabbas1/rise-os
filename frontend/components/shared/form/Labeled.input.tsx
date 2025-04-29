@@ -45,7 +45,7 @@ const LabeledInput: React.FC<ILabeledInputProps> = ({
         <input
           id={name}
           name={name}
-          className={`w-full outline-slate-500 pt-[10px] pb-[9px] px-[17px] bg-slate-100  placeholder:text-gray-300 ${inter.className} ${className}`}
+          className={`w-full outline-slate-500 pt-[10px] pb-[9px] px-[17px] bg-white  placeholder:text-gray-300 ${inter.className} ${className}`}
           placeholder={placeHolder}
           {...register(name, validationRules)}
           type={isPassword && !showPassword ? 'password' : type}

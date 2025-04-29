@@ -49,40 +49,12 @@ const CustomFileDropdown: React.FC<CustomDropdownProps> = ({ files }) => {
               ? isPdf(selectedFile)
                 ? `PDF File`
                 : 'Image Selected'
-              : '-- Choose a file --'
+              : 'Choose a file --'
           }
           handleOnClick={() => setIsOpen(!isOpen)}
-          className="border px-3 py-2 rounded-md w-full flex justify-between items-center bg-white flex-row-reverse"
+          className="border px-3 py-2 rounded-md w-full !justify-between items-center bg-white flex-row-reverse"
           Icon={BsEye}
         />
-        {/* <button
-          type="button"
-          className="border px-3 py-2 rounded-md w-full flex justify-between items-center bg-white"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <span>
-            {selectedFile
-              ? isPdf(selectedFile)
-                ? `PDF File`
-                : 'Image Selected'
-              : '-- Choose a file --'}
-          </span>
-
-          <svg
-            className="w-4 h-4 ml-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
-        </button> */}
 
         {isOpen && (
           <div className="absolute mt-1 w-full bg-white border rounded-md shadow-lg z-10 max-h-60 overflow-auto">

@@ -11,7 +11,7 @@ export interface IFormField {
   placeholder: string;
   isRequired: boolean;
   validationRules: IValidationRules;
-  options: any[] | null;
+  options: [] | null;
   rowNumber: number;
   order: number;
   formId: string;

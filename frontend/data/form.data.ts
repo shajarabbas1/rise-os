@@ -94,7 +94,7 @@ export const formData = {
           {
             id: 'db95665f-f2b4-4d7b-8e9d-0bac8fc3c92a',
             name: 'ndisnumber',
-            label: 'enter ndis number',
+            label: 'Enter NDIS number',
             type: 'text',
             placeholder: '12KLW1',
             isRequired: true,
@@ -130,7 +130,7 @@ export const formData = {
           {
             id: 'db95665f-f2b4-4d7b-8e9d-0bac8fc3c92b',
             name: 'Gender',
-            label: 'enter Your Gender',
+            label: 'Select Your Gender',
             type: 'select',
             placeholder: 'Male',
             isRequired: true,
@@ -150,7 +150,7 @@ export const formData = {
           {
             id: 'd8cfacda-1ff1-4c7b-b1a4-2b919616feb2',
             name: 'email',
-            label: 'enter your email',
+            label: 'Enter your email',
             type: 'email',
             placeholder: 'waqar@piecyfer.com',
             isRequired: true,
@@ -166,7 +166,7 @@ export const formData = {
           {
             id: 'd8cfacda-1ff1-4c7b-b1a4-2b919616feb1',
             name: 'fullName',
-            label: 'enter your full name',
+            label: 'Enter your full name',
             type: 'text',
             placeholder: 'John Doe',
             isRequired: true,
@@ -191,7 +191,7 @@ export const formData = {
           {
             id: '9a40347b-e582-45a8-8924-e4511f5bc07f',
             name: 'service',
-            label: 'what services are being provided?',
+            label: 'What services are being provided?',
             type: 'textarea',
             placeholder: 'Describe the services',
             isRequired: true,

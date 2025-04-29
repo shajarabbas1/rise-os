@@ -2,16 +2,22 @@
 
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { CardDescription, PrimaryHeading, SectionHeading } from '../typography';
+import {
+  CardDescription,
+  CardHeading,
+  PrimaryHeading,
+  SectionHeading,
+} from '../typography';
 import Row from '../row';
 import LabeledInput from './Labeled.input';
 import LabeledCheckbox from './LabeledCheckBox.input';
 import CustomFileDropdown from './Custom.dropdown';
-import { IForm, IFormField } from '../../../types/form.types';
+import { IForm } from '../../../types/form.types';
 import IconButton from '../button';
 import CustomRadioGroup from './Labeled.radio';
 import CustomSelect from './Labeled.select';
 import LabeledTextarea from './Labeled.textarea';
+
 const DynamicForm = ({ formData }: { formData: IForm }) => {
   const {
     register,
@@ -23,7 +29,7 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
     console.log('Form submitted with data:', data);
   };
 
-  const renderField = (field: IFormField) => {
+  const renderField = (field: any) => {
     const {
       id,
       name,
@@ -34,6 +40,7 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
       validationRules,
       options,
     } = field;
+
     const files = [
       'https://plus.unsplash.com/premium_photo-1681506669115-cb6b2d30dbc7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       'https://plus.unsplash.com/premium_photo-1669324357471-e33e71e3f3d8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
@@ -43,7 +50,7 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
     ];
 
     const baseInputClass =
-      'w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500';
+      'w-full bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500';
 
     switch (type) {
       case 'text':
@@ -53,9 +60,6 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
       case 'number':
         return (
           <LabeledInput
-            labelClassName={
-              'block text-sm font-medium text-gray-700 mb-1 capitalize'
-            }
             errors={errors}
             label={label}
             name={name}
@@ -70,21 +74,17 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
       case 'date':
         return (
           <LabeledInput
-            labelClassName={
-              'block text-sm font-medium text-gray-700 mb-1 capitalize'
-            }
             errors={errors}
             label={label}
             name={name}
             type={type}
-            startDate={new Date()}
-            endDate={new Date(Date.now()) * 30 * 24 * 60 * 60 * 1000}
             placeHolder={placeholder}
             className={baseInputClass}
             register={register}
             validationRules={validationRules}
           />
         );
+
       case 'time':
         return (
           <LabeledInput
@@ -106,9 +106,6 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
         return (
           <div>
             <LabeledInput
-              labelClassName={
-                'block text-sm font-medium text-gray-700 mb-1 capitalize'
-              }
               errors={errors}
               label={label}
               name={name}
@@ -124,7 +121,17 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
 
       case 'textarea':
         return (
-          <LabeledTextarea name={name} id={id} label={label} placeholder={placeholder} rows={4} validationRules={validationRules} className={baseInputClass} register={register} errors={errors}/>
+          <LabeledTextarea
+            name={name}
+            id={id}
+            label={label}
+            placeholder={placeholder}
+            rows={4}
+            validationRules={validationRules}
+            className={baseInputClass}
+            register={register}
+            errors={errors}
+          />
         );
 
       case 'select':
@@ -174,7 +181,7 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
 
         return (
           <Row className="flex flex-col space-y-2">
-            {options.map(option => (
+            {options.map((option: any) => (
               <LabeledCheckbox
                 key={option.value}
                 className={'flex items-center space-x-2'}
@@ -194,49 +201,58 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
   };
 
   return (
-    <div className={'max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg'}>
-      <PrimaryHeading title={formData.name} />
-      <CardDescription
-        className="text-gray-600 mb-6"
-        title={formData.description}
-      />
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {formData.sections.map(section => {
-          const sortedFields = [...section.fields].sort(
-            (a, b) => a.order - b.order,
-          );
+    <Row className="w-full justify-center py-6 bg-white">
+      <Row
+        className={
+          'flex-col w-[85%] p-6 bg-slate-100 rounded-lg shadow-lg '
+        }
+      >
+        <SectionHeading className="w-full text-center" title={formData.name} />
 
-          return (
-            <div
-              key={section.id}
-              className="mb-8 p-4 border border-gray-200 rounded-md"
-            >
-              <SectionHeading title={section.title} />
-              <CardDescription
-                className="text-gray-600 mb-4"
-                title={section.description}
-              />
+        <CardDescription
+          className="w-full text-center mb-4"
+          title={formData.description}
+        />
 
-              <Row className={'space-y-4 flex-wrap justify-between w-full'}>
-                {sortedFields.map(field => (
-                  <div key={field.id} className="form-group w-[24%]">
-                    {renderField(field)}
-                  </div>
-                ))}
-              </Row>
-            </div>
-          );
-        })}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {formData.sections.map(section => {
+            const sortedFields = [...section.fields].sort(
+              (a, b) => a.order - b.order,
+            );
 
-        <Row className={'mt-6'}>
-          <IconButton
-            handleOnClick={handleSubmit(onSubmit)}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            title="Submit"
-          />
-        </Row>
-      </form>
-    </div>
+            return (
+              <div
+                key={section.id}
+                className="mb-3 p-4 bg-orange-50 rounded-md border border-slate-300"
+              >
+                <CardHeading title={section.title} className="capitalize" />
+                
+                <CardDescription
+                  className="text-gray-600 mt-1 mb-2 "
+                  title={section.description}
+                />
+
+                <Row className={'space-y-4 flex-wrap justify-between w-full'}>
+                  {sortedFields.map(field => (
+                    <div key={field.id} className="form-group w-[24%]">
+                      {renderField(field)}
+                    </div>
+                  ))}
+                </Row>
+              </div>
+            );
+          })}
+
+          <Row className={'mt-3 justify-end'}>
+            <IconButton
+              handleOnClick={handleSubmit(onSubmit)}
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              title="Submit"
+            />
+          </Row>
+        </form>
+      </Row>
+    </Row>
   );
 };
 
