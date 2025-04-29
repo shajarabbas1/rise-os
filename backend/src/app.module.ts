@@ -17,11 +17,16 @@ import QueueModule from './modules/queue-module/queue.module';
 
 @Module({
   imports: [
-    BullModule.forRoot({
-      redis: {
-        host: 'localhost',
-        port: 6379,
-      },
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+
+      useFactory: async (configService: ConfigService) => ({
+        redis: {
+          host: configService.getOrThrow<string>('REDIS_HOST'),
+          port: configService.getOrThrow<number>('REDIS_PORT'),
+        },
+      }),
     }),
 
     ConfigModule.forRoot({
