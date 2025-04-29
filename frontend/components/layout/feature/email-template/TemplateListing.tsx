@@ -108,7 +108,7 @@ const EmailTemplateListing: React.FC<IEmailTemplateListingProps> = ({
             constainerClassName={`${index % 2 === 0 ? 'bg-slate-100' : 'bg-slate-200'}`}
             handleViewClick={() => toggleViewModal(item)}
             handleEditClick={() =>
-              router.push(`${PAGES_ROUTES.emailTemplate}?id=${item.id}`)
+              router.push(`${PAGES_ROUTES.emailTemplate}/${item.id}`)
             }
             handleDeleteClick={() => onDeleteClick(item)}
           />
