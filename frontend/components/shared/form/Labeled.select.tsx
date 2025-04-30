@@ -1,6 +1,7 @@
 import React from 'react';
 import { RegisterOptions } from 'react-hook-form';
 import { FormLabel } from '../typography';
+
 export interface Option {
   value: string;
   label: string;

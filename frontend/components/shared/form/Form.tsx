@@ -2,12 +2,7 @@
 
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import {
-  CardDescription,
-  CardHeading,
-  PrimaryHeading,
-  SectionHeading,
-} from '../typography';
+import { CardDescription, CardHeading, SectionHeading } from '../typography';
 import Row from '../row';
 import LabeledInput from './Labeled.input';
 import LabeledCheckbox from './LabeledCheckBox.input';
@@ -17,6 +12,7 @@ import IconButton from '../button';
 import CustomRadioGroup from './Labeled.radio';
 import CustomSelect from './Labeled.select';
 import LabeledTextarea from './Labeled.textarea';
+import { TbDownload } from 'react-icons/tb';
 
 const DynamicForm = ({ formData }: { formData: IForm }) => {
   const {
@@ -204,9 +200,16 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
     <Row className="w-full justify-center py-6 bg-white">
       <Row
         className={
-          'flex-col w-[85%] p-6 bg-slate-100 rounded-lg shadow-lg '
+          'flex-col w-[85%] p-6 bg-slate-100 rounded-lg shadow-lg items-end relative'
         }
       >
+        <IconButton
+          title="Download Form"
+          className="bg-indigo-600 text-white px-4 py-1 !gap-0 absolute"
+          Icon={TbDownload}
+          iconColor="text-white"
+        />
+
         <SectionHeading className="w-full text-center" title={formData.name} />
 
         <CardDescription
@@ -226,7 +229,7 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
                 className="mb-3 p-4 bg-orange-50 rounded-md border border-slate-300"
               >
                 <CardHeading title={section.title} className="capitalize" />
-                
+
                 <CardDescription
                   className="text-gray-600 mt-1 mb-2 "
                   title={section.description}

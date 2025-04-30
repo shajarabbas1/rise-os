@@ -1,11 +1,13 @@
 'use client';
+
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { BsEye } from 'react-icons/bs';
+import { BsEye, BsArrowDown } from 'react-icons/bs';
 import Link from 'next/link';
 import IconButton from '../button';
 import Row from '../row';
 import { CardDescription, SectionHeading } from '../typography';
+
 interface CustomDropdownProps {
   files: string[];
 }
@@ -53,7 +55,8 @@ const CustomFileDropdown: React.FC<CustomDropdownProps> = ({ files }) => {
           }
           handleOnClick={() => setIsOpen(!isOpen)}
           className="border px-3 py-2 rounded-md w-full !justify-between items-center bg-white flex-row-reverse"
-          Icon={BsEye}
+          Icon={BsArrowDown}
+          iconColor='text-black'
         />
 
         {isOpen && (
@@ -82,6 +85,7 @@ const CustomFileDropdown: React.FC<CustomDropdownProps> = ({ files }) => {
                           className="object-cover rounded"
                         />
                       </div>
+
                       <span>Image {index + 1}</span>
                     </Row>
                   )}
@@ -91,9 +95,11 @@ const CustomFileDropdown: React.FC<CustomDropdownProps> = ({ files }) => {
           </div>
         )}
       </div>
+
       {previewUrl && (
         <div className="mt-4">
           <SectionHeading className="font-medium mb-2" title={'Preview'} />
+
           {isImage(previewUrl) ? (
             <div className="relative w-full h-64">
               <Image
@@ -106,27 +112,13 @@ const CustomFileDropdown: React.FC<CustomDropdownProps> = ({ files }) => {
           ) : isPdf(previewUrl) ? (
             <div className="border rounded-md p-4 bg-gray-50">
               <CardDescription className="mb-2" title={'PDF Preview'} />
+
               <Link
                 href={previewUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline flex items-center"
               >
-                {/* <svg
-                  className="w-5 h-5 mr-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                  />
-                </svg>
-                 */}
                 <BsEye size={15} />
                 Open PDF Preview
               </Link>
