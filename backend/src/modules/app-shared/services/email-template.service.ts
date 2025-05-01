@@ -8,9 +8,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, Like, Repository } from 'typeorm';
 import EmailTemplate from '../entities/email-template.entity';
 import { CreateEmailTemplateDto } from '../dto/create-email-template.dto';
-import OffsetPaginationArgs from 'src/common/infra/offset-pagination/offset-pagination.args';
+import OffsetPaginationArgs from '../../../common/infra/offset-pagination/offset-pagination.args';
 import FilterEmailTemplateDto from '../dto/filter-email-template.dto';
-import offsetPaginate from 'src/common/infra/offset-pagination/offset-paginate';
+import offsetPaginate from '../../../common/infra/offset-pagination/offset-paginate';
 import UpdateEmailTemplateDto from '../dto/update-email-template.dto';
 
 @Injectable()

@@ -3,7 +3,7 @@ import { BullModule } from '@nestjs/bull';
 
 import MailProcessor from './processors/mail.processor';
 import QueueService from './queue.service';
-import { QUEUE_NAMES } from 'src/constant';
+import { QUEUE_NAMES } from '../../constant';
 import { AppSharedModule } from '../app-shared/app-shared.module';
 
 @Module({

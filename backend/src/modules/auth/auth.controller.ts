@@ -25,8 +25,7 @@ import UserEmailDto from './dto/email.dto';
 import UpdateUserDto from '../user/dto/update-user.dto';
 import SignupUserDto from './dto/signup-user.dto';
 import { Response } from 'express';
-import UserCategoryController from '../user-registration/controllers/user-category.controller';
-import { AuthenticationGuard } from 'src/common/guards/authentication.guard';
+import { AuthenticationGuard } from '../../common/guards/authentication.guard';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -55,11 +54,14 @@ export default class AuthController {
     status: 500,
     description: 'Internal Server Error: Something went wrong.',
   })
-  async signUp(@Body() payload: SignupUserDto,@Res({ passthrough: true }) res:Response ) {
+  async signUp(
+    @Body() payload: SignupUserDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     const data = await this.authService.create(payload);
     res.cookie('accessToken', data.accessToken, {
       httpOnly: true,
-      secure: false, 
+      secure: false,
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       sameSite: 'lax',
       path: '/',
@@ -68,7 +70,7 @@ export default class AuthController {
       message: 'User created successfully.',
       statusCode: HttpStatus.CREATED,
       data,
-    }
+    };
   }
 
   @Post('/login')
@@ -83,7 +85,10 @@ export default class AuthController {
     description: 'Invalid credentials provided.',
   })
   @HttpCode(200) // We are not creating a new records so the status will be OK instead of CREATED
-  async login(@Body() loginDto: LoginDto,@Res({ passthrough: true }) res:Response) {
+  async login(
+    @Body() loginDto: LoginDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     const data = await this.authService.login(loginDto);
 
     const dataToSend = {
@@ -93,7 +98,7 @@ export default class AuthController {
     };
     res.cookie('accessToken', data.accessToken, {
       httpOnly: true,
-      secure: false, 
+      secure: false,
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       sameSite: 'lax',
       path: '/',
@@ -101,12 +106,11 @@ export default class AuthController {
     return dataToSend;
   }
 
-  @Get("validate-token")
+  @Get('validate-token')
   @UseGuards(AuthenticationGuard)
-  validateToken(@Req() req:any){
-    return {message:"successfully",user:req.user}
+  validateToken(@Req() req: any) {
+    return { message: 'successfully', user: req.user };
   }
-
 
   @Post('/resend-otp')
   @ApiOperation({

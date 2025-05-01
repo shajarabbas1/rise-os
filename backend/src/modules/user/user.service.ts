@@ -7,8 +7,8 @@ import {
 } from '@nestjs/common';
 import { hash } from 'bcryptjs';
 import FilterUserDto from './dto/filter-user.dto';
-import OffsetPaginationArgs from 'src/common/infra/offset-pagination/offset-pagination.args';
-import offsetPaginate from 'src/common/infra/offset-pagination/offset-paginate';
+import OffsetPaginationArgs from '../../common/infra/offset-pagination/offset-pagination.args';
+import offsetPaginate from '../../common/infra/offset-pagination/offset-paginate';
 import User from './entities/user.entity';
 import { FindManyOptions, Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,7 +16,7 @@ import UpdateUserDto from './dto/update-user.dto';
 import UserEmailDto from '../auth/dto/email.dto';
 import SignupUserDto from '../auth/dto/signup-user.dto';
 import EmailTemplateService from '../app-shared/services/email-template.service';
-import { EmailTemplateConstant } from 'src/constant';
+import { EmailTemplateConstant } from '../../constant';
 import HandlebarService from '../app-shared/services/handlebar.service';
 import QueueService from '../queue-module/queue.service';
 

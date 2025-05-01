@@ -1,6 +1,6 @@
 import { Processor, Process } from '@nestjs/bull';
 import { Job } from 'bull';
-import { QUEUE_NAMES } from 'src/constant';
+import { QUEUE_NAMES } from '../../../constant';
 import NodeMailerService, {
   IEmailPayload,
 } from 'src/modules/app-shared/services/nodemailer.service';

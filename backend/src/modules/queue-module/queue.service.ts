@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
-import { QUEUE_NAMES } from 'src/constant';
+import { QUEUE_NAMES } from '../../constant';
 import { IEmailPayload } from '../app-shared/services/nodemailer.service';
 
 @Injectable()

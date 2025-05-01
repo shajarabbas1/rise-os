@@ -34,9 +34,9 @@ export default class AuthService {
   }
 
   async create(payload: SignupUserDto) {
-    const user= await this.userService.create(payload);
+    const user = await this.userService.create(payload);
     const accessToken = await this.generateJwt(user);
-   
+
     return { ...user, accessToken };
   }
 
@@ -61,7 +61,7 @@ export default class AuthService {
     }
 
     const accessToken = await this.generateJwt(user);
-   
+
     return { ...user, accessToken };
   }
 
