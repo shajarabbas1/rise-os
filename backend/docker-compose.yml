@@ -28,10 +28,28 @@ services:
     ports:
       - '5000:5000'
       - '9229:9229'
+    environment:
+      - CHOKIDAR_USEPOLLING=true
     depends_on:
       - postgres
       - redis
     env_file: '.env'
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: rise_frontend
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - backend
+    env_file: '../frontend/.env'
+    ports:
+      - '3000:3000'
 
 volumes:
   postgres_data_rise:
