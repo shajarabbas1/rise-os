@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   postgres:
     image: postgres:16
@@ -51,8 +53,63 @@ services:
     ports:
       - '3000:3000'
 
+  stripe-cli:
+    image: stripe/stripe-cli
+    container_name: rise_stripe_cli
+    environment:
+      STRIPE_CLI_API_KEY: ${STRIPE_SECRET_KEY} # Set your Stripe secret key here
+    volumes:
+      - .:/app
+    entrypoint: >
+      stripe listen --forward-to http://rise_backend:5000/webhook
+    depends_on:
+      - backend
+    # Optionally expose a port if you want to connect to the Stripe CLI externally
+    ports:
+      - '8000:8000' # Expose this for testing or debugging
+
 volumes:
   postgres_data_rise:
     driver: local
   redis_data_rise:
     driver: local
+# services:
+#   postgres:
+#     image: postgres:16
+#     container_name: rise_postgres
+#     environment:
+#       POSTGRES_USER: ${DB_USER}
+#       POSTGRES_PASSWORD: ${DB_PASSWORD}
+#       POSTGRES_DB: ${DB_DATABASE}
+#     ports:
+#       - '5432:5432'
+#     volumes:
+#       - postgres_data_rise:/var/lib/postgresql/data
+
+#   redis:
+#     image: redis:6.2.14
+#     container_name: rise_redis
+#     volumes:
+#       - redis_data_rise:/data
+#     ports:
+#       - '6379:6379'
+
+#   backend:
+#     build: ./
+#     container_name: rise_backend
+#     volumes:
+#       - ./:/app/
+#       - /app/node_modules
+#     ports:
+#       - '5000:5000'
+#       - '9229:9229'
+#     depends_on:
+#       - postgres
+#       - redis
+#     env_file: '.env'
+
+# volumes:
+#   postgres_data_rise:
+#     driver: local
+#   redis_data_rise:
+#     driver: local

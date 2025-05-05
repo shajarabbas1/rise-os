@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 import * as cookieParser from 'cookie-parser';
-
+import * as express from 'express';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -28,7 +28,17 @@ async function bootstrap() {
     credentials: true,
   });
 
-  app.use(cookieParser())
+  // app.use(
+  //   bodyParser.json({
+  //     verify: (req: any, res, buf) => {
+  //       if (req.originalUrl.startsWith('/stripe/webhook')) {
+  //         req.rawBody = buf;
+  //       }
+  //       return true;
+  //     },
+  //   }),
+  // );
+
   const config = new DocumentBuilder()
     .setTitle('RISEOS')
     .setDescription('Riseos API description')

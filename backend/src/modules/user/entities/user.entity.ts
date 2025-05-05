@@ -69,4 +69,16 @@ export default class User extends CustomBaseEntity {
   // ✅ relationship for user and sub-category regstration
   @OneToMany(() => UserSubCategory, userCategory => userCategory.user)
   userSubCategories: UserSubCategory[];
+
+  @Column({ nullable: true })
+  stripeCustomerId: string;
+
+  @Column({ nullable: true })
+  subscriptionId: string;
+
+  @Column({ nullable: true, default: null })
+  subscriptionStatus: string;
+
+  @Column({ default: false })
+  isPremium: boolean;
 }

@@ -40,4 +40,13 @@ export default class CreateUserDto {
   @IsString()
   @IsOptional()
   password?: string;
+
+  @ApiProperty({
+    example: 'cus_J7LFL2JjL7qS9a',
+    description: 'The Stripe Customer ID for the user.',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  stripeCustomerId?: string;
 }

@@ -47,7 +47,6 @@ const Page = () => {
   const {
     register,
     handleSubmit,
-    reset,
     watch,
     formState: { errors, isValid },
   } = useForm<IFormData>({

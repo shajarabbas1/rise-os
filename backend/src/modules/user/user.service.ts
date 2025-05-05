@@ -65,6 +65,10 @@ export default class UserService {
     return user;
   }
 
+  async updateStripeCustomerId(userId: string, customerId: string) {
+    await this.userRepository.update(userId, { stripeCustomerId: customerId });
+  }
+
   async findByEmail(email: string, throwException = true) {
     const user = await this.userRepository.findOne({
       where: { email: email.toLowerCase() },
@@ -248,5 +252,62 @@ export default class UserService {
     });
 
     return await this.findById(user.id, true, false);
+  }
+
+  async findByStripeCustomerId(stripeCustomerId: string): Promise<User> {
+    return this.userRepository.findOne({ where: { stripeCustomerId } });
+  }
+
+  async updateSubscription(
+    stripeCustomerId: string,
+    subscriptionId: string,
+    status: string,
+  ): Promise<User> {
+    const user = await this.findByStripeCustomerId(stripeCustomerId);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    await this.userRepository.update(user.id, {
+      subscriptionId,
+      subscriptionStatus: status,
+      isPremium: ['active', 'trialing'].includes(status),
+    });
+
+    // Send confirmation email
+    if (['active', 'trialing'].includes(status)) {
+      // await this.mailService.sendSubscriptionConfirmation(user.email, status);
+    }
+
+    return this.findById(user.id);
+  }
+
+  async removeSubscription(stripeCustomerId: string): Promise<User> {
+    const user = await this.findByStripeCustomerId(stripeCustomerId);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    await this.userRepository.update(user.id, {
+      subscriptionId: null,
+      subscriptionStatus: 'canceled',
+      isPremium: false,
+    });
+
+    // await this.mailService.sendSubscriptionCancellation(user.email);
+
+    return this.findById(user.id);
+  }
+
+  async notifyPaymentFailed(stripeCustomerId: string): Promise<void> {
+    const user = await this.findByStripeCustomerId(stripeCustomerId);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // await this.mailService.sendPaymentFailedNotification(user.email);
   }
 }

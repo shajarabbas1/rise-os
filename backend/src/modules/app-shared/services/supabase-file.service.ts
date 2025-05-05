@@ -51,4 +51,22 @@ export class SupabaseService {
       throw new Error(`File upload failed: ${error.message}`);
     }
   }
+
+  async getSignedUrl(bucket: string, path: string, expiresIn: number = 3600) {
+    const { data, error } = await this.supabase.storage
+      .from(bucket)
+      .createSignedUrl(path, expiresIn);
+
+    if (error) throw error;
+    return data.signedUrl;
+  }
+
+  async deleteFile(bucket: string, path: string) {
+    const { data, error } = await this.supabase.storage
+      .from(bucket)
+      .remove([path]);
+
+    if (error) throw error;
+    return data;
+  }
 }

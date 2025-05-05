@@ -1,5 +1,5 @@
 import Row from '@/components/shared/row';
-import { CardDescription, CardHeading } from '@/components/shared/typography';
+import {  CardHeading } from '@/components/shared/typography';
 import Image from 'next/image';
 import React from 'react';
 

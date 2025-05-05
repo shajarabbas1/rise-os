@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { CardDescription, CardHeading, SectionHeading } from '../typography';
 import Row from '../row';
@@ -13,6 +13,8 @@ import CustomRadioGroup from './Labeled.radio';
 import CustomSelect from './Labeled.select';
 import LabeledTextarea from './Labeled.textarea';
 import { TbDownload } from 'react-icons/tb';
+import { usePDFExport } from './useDownload-form';
+import { supabase } from '../supabase/supabase-client';
 
 const DynamicForm = ({ formData }: { formData: IForm }) => {
   const {
@@ -20,22 +22,66 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const { handleDownloadPDF } = usePDFExport(formRef);
+  const [receivedPath, setReceivedPath] = React.useState(false);
+  // const { componentRef, downloadPdf } = usePdfDownload({
+  //   filename: 'form-submission.pdf',
+  //   orientation: 'portrait',
+  //   margin: 15,
+  //   // beforeCapture: () => {
+  //   //   // Show download indicator and hide buttons before capture
+  //   //   setIsDownloading(true);
+  //   //   return new Promise(resolve => setTimeout(resolve, 100));
+  //   // },
+  //   // afterCapture: () => {
+  //   //   // Hide download indicator after capture
+  //   //   setIsDownloading(false);
+  //   //   return new Promise(resolve => setTimeout(resolve, 100));
+  //   // }
+  // });
+  // // const formRef=useRef<HTMLFormElement>(null);
+  // // const{handleDownloadPDF}=usePDFExport(formRef)
   const onSubmit = (data: any) => {
     console.log('Form submitted with data:', data);
   };
 
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const filePath = `uploads/${file.name}`;
+
+    // 1. Upload file
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('uploads')
+      .upload(filePath, file, {
+        upsert: true,
+      });
+
+    if (uploadError) {
+      console.error('Upload error:', uploadError.message);
+      alert('Upload failed: ' + uploadError.message);
+      return;
+    }
+    console.log('uploadData', uploadData);
+
+    const { data: urlData, error: urlError } = supabase.storage
+      .from('uploads')
+      .getPublicUrl(uploadData.path);
+
+    if (urlError) {
+      console.error('URL fetch error:', urlError.message);
+      alert('Failed to get public URL: ' + urlError.message);
+      return;
+    }
+
+    console.log('File uploaded and available at:', urlData.publicUrl);
+  };
+
   const renderField = (field: any) => {
-    const {
-      id,
-      name,
-      label,
-      type,
-      placeholder,
-      isRequired,
-      validationRules,
-      options,
-    } = field;
+    const { id, name, label, type, placeholder, validationRules, options } =
+      field;
 
     const files = [
       'https://plus.unsplash.com/premium_photo-1681506669115-cb6b2d30dbc7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
@@ -199,9 +245,7 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
   return (
     <Row className="w-full justify-center py-6 bg-white">
       <Row
-        className={
-          'flex-col w-[85%] p-6 bg-slate-100 rounded-lg shadow-lg items-end relative'
-        }
+        className={'flex-col w-[85%] p-6 bg-slate-100 rounded-lg shadow-lg '}
       >
         <IconButton
           title="Download Form"
@@ -217,7 +261,7 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
           title={formData.description}
         />
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
           {formData.sections.map(section => {
             const sortedFields = [...section.fields].sort(
               (a, b) => a.order - b.order,
@@ -254,6 +298,16 @@ const DynamicForm = ({ formData }: { formData: IForm }) => {
             />
           </Row>
         </form>
+        <div>
+          <label>UPlaod file</label>
+          <input type="file" onChange={handleUpload} />
+        </div>
+        <button
+          onClick={handleDownloadPDF}
+          className="px-8 py-2 bg-green-400 text-white text-lg"
+        >
+          Download Pdf
+        </button>
       </Row>
     </Row>
   );

@@ -22,7 +22,6 @@ interface IFormData {
 }
 
 const Page = () => {
-  const router = useRouter();
   const [resendTimer, setResendTimer] = useState(10);
 
   useEffect(() => {
@@ -45,8 +44,6 @@ const Page = () => {
 
   const {
     control,
-    handleSubmit,
-    reset,
     watch,
     formState: { errors },
   } = useForm<IFormData>({
@@ -59,12 +56,6 @@ const Page = () => {
       digitSix: '',
     },
   });
-
-  const onSubmit = async (data: IFormData) => {
-    const otp = Object.values(data).join('');
-
-    console.log({ otp });
-  };
 
   type FieldName = keyof IFormData;
 

@@ -25,7 +25,6 @@ const RoundedInput: React.FC<IRoundedInputProps> = ({
   rules,
   errors,
   type = 'text',
-  label,
   inputRef,
   onKeyDown,
   onChange,

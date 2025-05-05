@@ -3,6 +3,6 @@
 import DynamicForm from '@/components/shared/form/Form';
 import { formData } from '@/data/form.data';
 
-const Page = () => <DynamicForm formData={formData.data} />;
-
-export default Page;
+export default function Form() {
+  return <DynamicForm formData={formData.data} />;
+}

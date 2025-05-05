@@ -1,6 +1,6 @@
 // CustomRadioGroup.tsx
 import React from 'react';
-import { useFormContext, Controller, RegisterOptions } from 'react-hook-form';
+import {  RegisterOptions } from 'react-hook-form';
 import { FormLabel } from '../typography';
 export interface Option {
   value: string;

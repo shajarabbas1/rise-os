@@ -14,7 +14,7 @@ import { AppSharedModule } from './modules/app-shared/app-shared.module';
 import UploadedFileModule from './modules/file/uploaded-file.module';
 import { BullModule } from '@nestjs/bull';
 import QueueModule from './modules/queue-module/queue.module';
-
+import { StripeModule } from './modules/stripe/stripe.module';
 @Module({
   imports: [
     BullModule.forRootAsync({
@@ -64,6 +64,7 @@ import QueueModule from './modules/queue-module/queue.module';
     CategoryModule,
     UserRegistrationModule,
     FormModule,
+    StripeModule,
   ],
   controllers: [],
   providers: [],
